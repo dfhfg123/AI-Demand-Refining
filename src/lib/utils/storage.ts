@@ -1,8 +1,10 @@
+import type { RoleType } from './prompt';
+
 const KEY = 'ai-req-summarizer';
 
 export type PersistData = {
   apiKey?: string;
-  mode?: 'frontend' | 'api' | 'ui';
+  role?: RoleType;
   input?: string;
   output?: string;
 };
