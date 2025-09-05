@@ -13,7 +13,7 @@ const config = {
       strict: true
     }),
     paths: {
-      base: process.env.NODE_ENV === 'production' ? '/ai-req-summarizer' : '',
+      base: process.env.NODE_ENV === 'production' ? '/AI-Demand-Refining' : '',
     },
     prerender: {
       handleHttpError: 'warn'
