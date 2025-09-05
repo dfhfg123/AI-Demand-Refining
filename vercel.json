@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "src/routes/**": {
-      "runtime": "nodejs20.x"
-    }
-  },
-  "buildCommand": "npm run build"
-}
