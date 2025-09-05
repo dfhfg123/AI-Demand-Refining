@@ -2,7 +2,7 @@
 </script>
 
 <svelte:head>
-  <title>AI 需求提炼助手</title>
+  <title>AI 需求提炼专家</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </svelte:head>
 
