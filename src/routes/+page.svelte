@@ -82,10 +82,13 @@
       >
     </div>
     <textarea
-      bind:value={input}
-      placeholder="粘贴产品需求文档..."
-      style="width:100%;height:300px;padding:12px;box-sizing:border-box;border:1px solid #e5e7eb;border-radius:8px;"
-    ></textarea>
+    bind:value={input}
+    placeholder={`你是否经常看到冗长的产品需求文档，其中包含大量你看不懂或者你根本不关心的逻辑。
+  作为一个前端，你只想知道给了我几个接口，改动的有哪些页面有哪些交互逻辑。而知道这些要画大量时间看完你不了解的逻辑。
+  那么，直接把文档粘贴到这里，会有你想要的答案`}
+    style="width:100%;height:300px;padding:12px;box-sizing:border-box;border:1px solid #e5e7eb;border-radius:8px;white-space: pre-line;"
+  ></textarea>
+  
   </div>
 
   <div style="margin:16px 0;display:flex;gap:8px;">
