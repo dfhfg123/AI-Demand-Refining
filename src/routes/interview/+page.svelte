@@ -1,11 +1,12 @@
 <script lang="ts">
-  import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
+  import ComingSoonPage from "$lib/components/ComingSoonPage.svelte";
 </script>
 
-<div class="max-w-5xl mx-auto p-4 space-y-3">
-  <h2 class="text-xl font-semibold">面经生成助手</h2>
-  <ApiKeyPanel inline={true} />
-  <p class="text-gray-500 text-sm">占位页，后续补充。</p>
-</div>
+<ComingSoonPage 
+  title="面经生成助手"
+  description="帮助准备技术面试，生成有针对性的面试题目和答案"
+  icon="💼"
+  iconColor="from-indigo-500 to-purple-600"
+/>
 
 
