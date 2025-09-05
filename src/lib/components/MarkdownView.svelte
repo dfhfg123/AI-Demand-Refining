@@ -4,15 +4,44 @@
   $: html = marked.parse(source || '');
 </script>
 
-<div class="md">{@html html}</div>
+<div class="prose prose-sm max-w-none text-gray-800">{@html html}</div>
 
 <style>
-  .md { line-height: 1.65; }
-  .md h1, .md h2, .md h3 { margin: 12px 0 8px; }
-  .md p { margin: 8px 0; }
-  .md code { background: #f6f8fa; padding: 0 4px; border-radius: 3px; }
-  .md pre { background: #0b1020; color: #eaeef2; padding: 12px; overflow: auto; border-radius: 6px; }
-  .md table { border-collapse: collapse; width: 100%; }
-  .md th, .md td { border: 1px solid #e5e7eb; padding: 6px 8px; text-align: left; }
+  :global(.prose h1, .prose h2, .prose h3) {
+    @apply font-semibold text-gray-900 mt-6 mb-3;
+  }
+  :global(.prose h1) {
+    @apply text-xl;
+  }
+  :global(.prose h2) {
+    @apply text-lg;
+  }
+  :global(.prose h3) {
+    @apply text-base;
+  }
+  :global(.prose p) {
+    @apply my-3 leading-relaxed;
+  }
+  :global(.prose code) {
+    @apply bg-gray-100 px-1.5 py-0.5 rounded text-sm;
+  }
+  :global(.prose pre) {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto;
+  }
+  :global(.prose table) {
+    @apply w-full border-collapse;
+  }
+  :global(.prose th, .prose td) {
+    @apply border border-gray-300 px-3 py-2 text-left;
+  }
+  :global(.prose th) {
+    @apply bg-gray-50 font-medium;
+  }
+  :global(.prose ul, .prose ol) {
+    @apply my-3 pl-6;
+  }
+  :global(.prose li) {
+    @apply my-1;
+  }
 </style>
 

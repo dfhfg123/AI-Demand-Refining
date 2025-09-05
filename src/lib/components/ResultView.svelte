@@ -5,12 +5,18 @@
     .catch(() => {});
 </script>
 
-<div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0;">
-    <strong>输出</strong>
-    <button on:click={copy} disabled={!text}>复制</button>
+<div class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h4 class="text-lg font-semibold text-gray-900">输出结果</h4>
+    <button 
+      on:click={copy} 
+      disabled={!text}
+      class="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+    >
+      复制
+    </button>
   </div>
-  <div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;height:420px;overflow:auto;background:#fafafa;">
+  <div class="border border-gray-200 rounded-lg p-4 h-96 overflow-auto bg-gray-50">
     <MarkdownView source={text} />
   </div>
 </div>
