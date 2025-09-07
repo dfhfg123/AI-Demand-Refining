@@ -7,13 +7,13 @@
   // 确保组件挂载时有正确的默认值
   onMount(() => {
     if (!$selectedModelStore || $selectedModelStore === '') {
-      selectedModelStore.set('zai-org/GLM-4.5V');
+      selectedModelStore.set('moonshotai/Kimi-K2-Instruct');
     }
   });
   
   // 响应式检查，确保值的有效性
   $: if ($selectedModelStore && !availableModels.some(model => model.id === $selectedModelStore)) {
-    selectedModelStore.set('zai-org/GLM-4.5V');
+    selectedModelStore.set('moonshotai/Kimi-K2-Instruct');
   }
 </script>
 
