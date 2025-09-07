@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
+  import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
   import { buildPrompt } from '$lib/utils/prompt';
 
   let input = '';
+  let previousLoading = false;
+  let hasGeneratedResult = false;
   
   // 使用统一的AI服务
   const aiService = createAIService();
@@ -13,19 +17,53 @@
   // 响应式获取AI服务状态
   $: ({ loading, progress, status, result, error } = $aiService);
   $: output = result || error || '';
+  
+  // 监听加载状态变化，生成完成后自动滚动到底部
+  $: {
+    // 检测从加载中到加载完成，且有结果或错误
+    const justFinished = previousLoading && !loading;
+    const hasNewResult = (result && result.length > 0) || (error && error.length > 0);
+    
+    if (justFinished && hasNewResult && !hasGeneratedResult) {
+      hasGeneratedResult = true;
+      console.log('检测到AI生成完成，开始滚动');
+      
+      // AI生成完成，延迟一点时间确保DOM更新完成后再滚动
+      tick().then(() => {
+        setTimeout(() => {
+          const currentHeight = document.documentElement.scrollHeight;
+          console.log('当前页面高度:', currentHeight);
+          
+          window.scrollTo({
+            top: currentHeight,
+            behavior: 'smooth'
+          });
+        }, 300); // 增加延迟时间确保ResultView组件完全渲染
+      });
+    }
+    
+    previousLoading = loading;
+  }
 
   const summarize = async () => {
     if (!input || !$apiKeyStore) return;
     
+    hasGeneratedResult = false; // 重置滚动标志，准备新的生成
     const prompt = buildPrompt(input);
     await invokeWithPrompt(prompt, aiService);
   };
 
   const resetAll = () => {
     input = '';
+    hasGeneratedResult = false; // 重置滚动标志
     aiService.reset();
   };
 </script>
+
+<svelte:head>
+  <title>AI 需求提炼专家 - Prompt Hub</title>
+  <meta name="description" content="自动提取文档中的核心信息，生成精准的开发需求" />
+</svelte:head>
 
 <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
   <!-- 页面头部 -->
@@ -35,20 +73,29 @@
         <span class="text-white text-xl">📝</span>
       </div>
       <div>
-        <h1 class="text-3xl font-bold text-neutral-800">AI 需求提炼助手</h1>
+        <h1 class="text-3xl font-bold text-neutral-800">AI 需求提炼专家</h1>
         <p class="text-neutral-600">自动提取文档中的核心信息，生成精准的开发需求</p>
       </div>
     </div>
     
     <!-- API Key 配置区域 -->
     <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-      <div class="flex items-center space-x-4">
-        <h3 class="text-lg font-semibold text-neutral-800 flex items-center flex-shrink-0">
-          <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-          API 配置
-        </h3>
-        <div class="flex-1">
+      <!-- 标题 -->
+      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
+        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+        API 配置
+      </h3>
+      
+      <!-- 配置内容 - 移动端垂直布局，桌面端水平布局 -->
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+        <!-- API Key 输入 -->
+        <div class="flex-1 sm:max-w-md">
           <ApiKeyPanel inline={true} />
+        </div>
+        
+        <!-- 模型选择 -->
+        <div class="flex-shrink-0">
+          <ModelSelect inline={true} />
         </div>
       </div>
     </div>

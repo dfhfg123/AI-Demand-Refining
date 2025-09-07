@@ -7,7 +7,7 @@
 
   const title = derived(page, ($p) => {
     const seg = $p.url.pathname.split("/").filter(Boolean).at(0) || "home";
-    return seg === "home" ? "AI 工具集" : `AI 工具集 | ${seg}`;
+    return seg === "home" ? "Prompt Hub" : `Prompt Hub | ${seg}`;
   });
   
   const active = derived(page, ($p) => $p.url.pathname);
@@ -29,10 +29,7 @@
             { href: "/", label: "首页" },
             { href: "/summarizer", label: "需求提炼专家" },
             { href: "/prd", label: "PRD生成器" },
-            { href: "/meeting", label: "会议纪要行动清单" },
-            { href: "/competitive", label: "竞品分析报告" },
-            { href: "/tech-guide", label: "技术选型指南" },
-            { href: "/interview", label: "面经助手" }
+            { href: "/interview", label: "面经转八股" }
           ]} />
       </div>
     </div>
@@ -68,17 +65,11 @@
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">PRD</span>
       </a>
-      <a href="/meeting" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/meeting')}
-         class:text-neutral-500={!$active.startsWith('/meeting')}>
+      <a href="/interview" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/interview')}
+         class:text-neutral-500={!$active.startsWith('/interview')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">会议</span>
-      </a>
-      <a href="/competitive" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/competitive')}
-         class:text-neutral-500={!$active.startsWith('/competitive')}>
-        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">竞品</span>
+        <span class="truncate">面试</span>
       </a>
     </div>
   </div>

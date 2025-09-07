@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { invokeSiliconFlowWithProgress, type ChatMessage, type ProgressCallback } from './api';
 import { get } from 'svelte/store';
-import { apiKeyStore } from '../stores/api';
+import { apiKeyStore, selectedModelStore } from '../stores/api';
 
 // AI请求状态接口
 export interface AIRequestState {
@@ -37,6 +37,9 @@ export const createAIService = () => {
       return;
     }
 
+    // 如果没有传入模型，使用用户选中的模型
+    const selectedModel = model || get(selectedModelStore);
+
     // 重置状态
     set({ loading: true, progress: 0, status: '', result: '', error: null });
 
@@ -45,7 +48,7 @@ export const createAIService = () => {
         apiKey,
         messages,
         onProgress,
-        model
+        selectedModel
       );
       
       update(state => ({ 

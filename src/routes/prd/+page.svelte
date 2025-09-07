@@ -2,6 +2,7 @@
   import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
   import MultiSelect from '$lib/components/MultiSelect.svelte';
+  import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
 
@@ -108,7 +109,7 @@
   8. 成功指标（KPI）：包含衡量产品成功的关键指标。
   9. 风险与挑战：包含可能遇到的风险和应对措施。
   10. 版本规划与迭代路线图。
-- 条理清晰、层次分明，使用编号和小标题，以Markdown格式输出。
+- 条理清晰、层次分明，使用编号和小标题。
 - 可读性强，避免冗余，确保即便没有上下文，读者也能理解。
 
 以下是用户提供的产品信息：
@@ -223,6 +224,11 @@
   };
 </script>
 
+<svelte:head>
+  <title>PRD 生成器 - Prompt Hub</title>
+  <meta name="description" content="填写产品信息，自动生成专业的产品需求文档" />
+</svelte:head>
+
 <div class="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
   <!-- 页面头部 -->
   <div class="mb-8">
@@ -238,13 +244,22 @@
     
     <!-- API Key 配置区域 -->
     <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-      <div class="flex items-center space-x-4">
-        <h3 class="text-lg font-semibold text-neutral-800 flex items-center flex-shrink-0">
-          <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-          API 配置
-        </h3>
-        <div class="flex-1">
+      <!-- 标题 -->
+      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
+        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+        API 配置
+      </h3>
+      
+      <!-- 配置内容 - 移动端垂直布局，桌面端水平布局 -->
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+        <!-- API Key 输入 -->
+        <div class="flex-1 sm:max-w-md">
           <ApiKeyPanel inline={true} />
+        </div>
+        
+        <!-- 模型选择 -->
+        <div class="flex-shrink-0">
+          <ModelSelect inline={true} />
         </div>
       </div>
     </div>

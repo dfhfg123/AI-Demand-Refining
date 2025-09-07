@@ -35,7 +35,7 @@ const url = 'https://api.siliconflow.cn/v1/chat/completions';
 const options = {
   method: 'POST',
   headers: {Authorization: 'Bearer <token>', 'Content-Type': 'application/json'},
-  body: '{"model":"Qwen/QwQ-32B","messages":[{"role":"user","content":"What opportunities and challenges will the Chinese large model industry face in 2025?"}]}'
+  body: '{"model":"","messages":[{"role":"user","content":"What opportunities and challenges will the Chinese large model industry face in 2025?"}]}'
 };
 try {
   const response = await fetch(url, options);

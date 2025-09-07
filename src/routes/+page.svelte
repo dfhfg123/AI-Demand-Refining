@@ -4,42 +4,21 @@
     {
       icon: "📝",
       title: "需求提炼专家",
-      description: "自动提取PRD文档中的核心信息，生成精准的开发需求",
+      description: "把冗杂的prd提炼出你需要的需求，告诉ai如何做，然后你去楼下喝咖啡吧！",
       href: "/summarizer",
       color: "from-blue-500 to-indigo-600"
     },
     {
       icon: "📋",
       title: "PRD 生成器",
-      description: "基于简单描述，自动生成完整的产品需求文档",
+      description: "基于简单描述，自动生成完整的产品需求文档，交给ai帮你实现吧！",
       href: "/prd",
       color: "from-purple-500 to-pink-600"
     },
     {
-      icon: "📅",
-      title: "会议纪要助手",
-      description: "将会议内容转化为结构化的行动清单和跟进事项",
-      href: "/meeting",
-      color: "from-green-500 to-teal-600"
-    },
-    {
-      icon: "📊",
-      title: "竞品分析报告",
-      description: "全面分析竞品情况，生成专业的对比分析报告",
-      href: "/competitive",
-      color: "from-orange-500 to-red-600"
-    },
-    {
-      icon: "⚙️",
-      title: "技术选型指南",
-      description: "基于项目需求，推荐最适合的技术方案和架构设计",
-      href: "/tech-guide",
-      color: "from-cyan-500 to-blue-600"
-    },
-    {
       icon: "💼",
-      title: "面经助手",
-      description: "帮助准备技术面试，生成有针对性的面试题目和答案",
+      title: "面经转八股",
+      description: "一键把面经转为面试官想听的答案，狠狠背八股！",
       href: "/interview",
       color: "from-indigo-500 to-purple-600"
     }
@@ -50,13 +29,14 @@
   <!-- 欢迎区域 -->
   <div class="text-center mb-12">
     <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-strong mb-6">
-      <span class="text-white text-2xl font-bold">AI</span>
+      <img src="/logo.png" alt="Prompt Hub Logo" class="w-10 h-10 object-contain" />
     </div>
     <h1 class="text-4xl sm:text-5xl font-bold text-neutral-800 mb-4">
-      欢迎使用 <span class="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">AI 工具集</span>
+      欢迎使用 <span class="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+Prompt Hub</span>
     </h1>
     <p class="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-      集成了多个 AI 驱动的生产力工具，帮助您高效处理文档、分析需求、生成报告。
+      集成了多个 AI 驱动的生产力工具，帮你节省时间狠狠摸鱼！。
       <br>
       选择左侧功能或下方卡片开始体验。
     </p>
@@ -102,7 +82,7 @@
   </div>
 
   <!-- 底部信息 -->
-  <div class="mt-16 text-center">
+  <!-- <div class="mt-16 text-center">
     <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-soft border border-white/20">
       <h2 class="text-2xl font-bold text-neutral-800 mb-4">开始使用</h2>
       <p class="text-neutral-600 mb-6 max-w-2xl mx-auto">
@@ -118,5 +98,5 @@
         </a>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>

@@ -11,9 +11,6 @@
     "/": "🏠",
     "/summarizer": "📝",
     "/prd": "📋",
-    "/meeting": "📅",
-    "/competitive": "📊",
-    "/tech-guide": "⚙️",
     "/interview": "💼"
   };
 </script>
@@ -26,8 +23,8 @@
         <span class="text-white font-bold text-lg">AI</span>
       </div>
       <div>
-        <h1 class="text-xl font-bold text-neutral-800">AI 工具集</h1>
-        <p class="text-xs text-neutral-500">智能办公助手</p>
+        <h1 class="text-xl font-bold text-neutral-800">Prompt Hub</h1>
+        <p class="text-xs text-neutral-500">程序员的摸鱼助手</p>
       </div>
     </div>
   </div>
