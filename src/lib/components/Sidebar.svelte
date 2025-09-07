@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
+  import { base } from "$app/paths";
   import { derived } from "svelte/store";
 
   type Nav = { href: string; label: string; icon?: string };
@@ -13,6 +14,11 @@
     "/prd": "📋",
     "/interview": "💼"
   };
+  
+  // 处理带有基路径的href
+  function getFullHref(href: string): string {
+    return `${base}${href}`;
+  }
 </script>
 
 <nav class="h-full w-64 bg-white/80 backdrop-blur-lg border-r border-white/20 shadow-soft flex flex-col">
@@ -34,7 +40,7 @@
     {#each items as item}
       {@const isActive = $active === item.href || ($active !== '/' && item.href !== '/' && $active.startsWith(item.href))}
       <a 
-        href={item.href}
+        href={getFullHref(item.href)}
         class="group relative flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-primary-50 hover:shadow-soft"
         class:bg-gradient-to-r={isActive}
         class:from-primary-500={isActive}

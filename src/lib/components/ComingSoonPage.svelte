@@ -1,10 +1,16 @@
 <script lang="ts">
   import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
+  import { base } from "$app/paths";
   
   export let title: string;
   export let description: string;
   export let icon: string;
   export let iconColor: string = "from-blue-500 to-indigo-600";
+  
+  // 处理带有基路径的href
+  function getFullHref(href: string): string {
+    return `${base}${href}`;
+  }
 </script>
 
 <div class="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
@@ -43,10 +49,10 @@
       敬请期待！
     </p>
     <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-      <a href="/summarizer" class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium hover:shadow-medium transition-all duration-200 hover:-translate-y-0.5 text-sm sm:text-base">
+      <a href={getFullHref("/summarizer")} class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium hover:shadow-medium transition-all duration-200 hover:-translate-y-0.5 text-sm sm:text-base">
         体验其他功能
       </a>
-      <a href="/" class="bg-white text-primary-600 border border-primary-200 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium hover:bg-primary-50 transition-all duration-200 text-sm sm:text-base">
+      <a href={getFullHref("/")} class="bg-white text-primary-600 border border-primary-200 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium hover:bg-primary-50 transition-all duration-200 text-sm sm:text-base">
         返回首页
       </a>
     </div>
