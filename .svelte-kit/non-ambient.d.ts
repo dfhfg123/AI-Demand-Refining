@@ -42,6 +42,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/competitive" | "/competitive/" | "/interview" | "/interview/" | "/meeting" | "/meeting/" | "/prd" | "/prd/" | "/summarizer" | "/summarizer/" | "/tech-guide" | "/tech-guide/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/example.md" | "/logo.png" | string & {};
+		Asset(): "/.nojekyll" | "/example.md" | "/logo.png" | string & {};
 	}
 }

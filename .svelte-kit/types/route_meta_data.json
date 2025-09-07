@@ -1,9 +1,24 @@
 {
-	"/": [],
-	"/competitive": [],
-	"/interview": [],
-	"/meeting": [],
-	"/prd": [],
-	"/summarizer": [],
-	"/tech-guide": []
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/competitive": [
+		"src/routes/+layout.js"
+	],
+	"/interview": [
+		"src/routes/+layout.js"
+	],
+	"/meeting": [
+		"src/routes/+layout.js"
+	],
+	"/prd": [
+		"src/routes/+layout.js"
+	],
+	"/summarizer": [
+		"src/routes/+layout.js"
+	],
+	"/tech-guide": [
+		"src/routes/+layout.js"
+	]
 }
