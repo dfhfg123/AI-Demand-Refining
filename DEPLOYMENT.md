@@ -19,7 +19,12 @@
 
 3. **自动部署**
    - 每次推送到 `main` 分支时，GitHub Actions会自动构建和部署
-   - 部署完成后，你的网站地址为：`https://你的用户名.github.io/ai-req-summarizer`
+   - 部署完成后，你的网站地址为：`https://你的用户名.github.io/AI-Demand-Refining`
+   - 所有页面路由将正确工作：
+     - 首页：`https://你的用户名.github.io/AI-Demand-Refining/`
+     - 需求提炼：`https://你的用户名.github.io/AI-Demand-Refining/summarizer`
+     - PRD生成器：`https://你的用户名.github.io/AI-Demand-Refining/prd`
+     - 面经助手：`https://你的用户名.github.io/AI-Demand-Refining/interview`
 
 ## 方案二：Gitee Pages (国内访问最快)
 
@@ -69,3 +74,31 @@ npm run preview
 - GitHub Pages 在国内访问相对稳定
 - 如果使用自定义域名，需要配置 CNAME 文件
 - 静态部署不支持服务端功能，所有逻辑都在客户端执行
+
+## 路由问题排查
+
+如果遇到 404 错误，请检查：
+
+1. **确认 GitHub Pages 设置**
+   - 在仓库设置中确保选择了 "GitHub Actions" 作为源
+   - 不要选择 "Deploy from a branch"
+
+2. **检查部署状态**
+   - 在 Actions 页面查看最新的部署是否成功
+   - 如果失败，查看错误日志
+
+3. **正确的URL格式**
+   - 首页：`https://用户名.github.io/AI-Demand-Refining/`
+   - 子页面：`https://用户名.github.io/AI-Demand-Refining/页面名`
+   - 注意：不是 `https://用户名.github.io/页面名`
+
+4. **重新部署**
+   ```bash
+   git add .
+   git commit -m "fix: update deployment configuration"
+   git push origin main
+   ```
+
+5. **等待部署完成**
+   - GitHub Pages 部署可能需要 5-10 分钟
+   - 在 Actions 页面可以查看进度

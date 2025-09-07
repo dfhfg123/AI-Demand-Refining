@@ -1,4 +1,10 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+  
+  // 处理带有基路径的href
+  function getFullHref(href: string): string {
+    return `${base}${href}`;
+  }
   
   const features = [
     {
@@ -29,7 +35,7 @@
   <!-- 欢迎区域 -->
   <div class="text-center mb-12">
     <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-strong mb-6">
-      <img src="/logo.png" alt="Prompt Hub Logo" class="w-10 h-10 object-contain" />
+      <img src="{base}/logo.png" alt="Prompt Hub Logo" class="w-10 h-10 object-contain" />
     </div>
     <h1 class="text-4xl sm:text-5xl font-bold text-neutral-800 mb-4">
       欢迎使用 <span class="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
@@ -68,7 +74,7 @@ Prompt Hub</span>
           
           <!-- 行动按钮 -->
           <a 
-            href={feature.href}
+            href={getFullHref(feature.href)}
             class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
           >
             立即使用

@@ -1,6 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { page } from "$app/stores";
+  import { base } from "$app/paths";
   import { derived } from "svelte/store";
   import Sidebar from "$lib/components/Sidebar.svelte";
   // 确保 tailwind 全局生效
@@ -11,6 +12,11 @@
   });
   
   const active = derived(page, ($p) => $p.url.pathname);
+  
+  // 处理带有基路径的href
+  function getFullHref(href: string): string {
+    return `${base}${href}`;
+  }
 </script>
 
 <svelte:head>
@@ -47,25 +53,25 @@
   <!-- 移动端底部导航 -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-2 py-2 z-50">
     <div class="flex justify-around items-center max-w-sm mx-auto">
-      <a href="/" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+      <a href={getFullHref("/")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active === '/'}
          class:text-neutral-500={$active !== '/'}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">首页</span>
       </a>
-      <a href="/summarizer" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+      <a href={getFullHref("/summarizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/summarizer')}
          class:text-neutral-500={!$active.startsWith('/summarizer')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">提炼</span>
       </a>
-      <a href="/prd" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+      <a href={getFullHref("/prd")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/prd')}
          class:text-neutral-500={!$active.startsWith('/prd')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">PRD</span>
       </a>
-      <a href="/interview" class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+      <a href={getFullHref("/interview")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/interview')}
          class:text-neutral-500={!$active.startsWith('/interview')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>

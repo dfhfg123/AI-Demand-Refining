@@ -17,13 +17,7 @@ const config = {
     },
     prerender: {
       entries: [
-        '/',
-        '/summarizer',
-        '/prd', 
-        '/interview',
-        '/tech-guide',
-        '/meeting',
-        '/competitive'
+        '*' // 使用通配符让 SvelteKit 自动发现所有路由
       ],
       handleHttpError: 'warn'
     }
