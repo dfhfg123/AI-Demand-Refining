@@ -2,6 +2,7 @@ const KEY = 'ai-req-summarizer';
 
 export type PersistData = {
   apiKey?: string;
+  selectedModel?: string;
   mode?: 'frontend' | 'api' | 'ui';
   input?: string;
   output?: string;

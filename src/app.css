@@ -1,0 +1,58 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 全局基础样式 */
+:root { 
+  color-scheme: light;
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-bg: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+}
+
+html, body { 
+  height: 100%; 
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+body { 
+  @apply text-neutral-800 bg-gradient-to-br from-blue-50 via-white to-indigo-50;
+  background-attachment: fixed;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400;
+}
+
+/* 焦点样式 */
+*:focus {
+  outline: none;
+}
+
+.focus-ring:focus {
+  @apply ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* 动画类 */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
