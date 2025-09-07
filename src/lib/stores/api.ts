@@ -13,7 +13,7 @@ export const availableModels = [
 ];
 
 const persisted = load();
-const defaultModel = 'zai-org/GLM-4.5V';
+const defaultModel = 'moonshotai/Kimi-K2-Instruct';
 
 export const apiKeyStore = writable<string>(persisted?.apiKey || '');
 export const selectedModelStore = writable<string>(persisted?.selectedModel || defaultModel);

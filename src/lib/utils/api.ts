@@ -3,7 +3,7 @@ export type ChatMessage = { role: 'user' | 'assistant' | 'system'; content: stri
 import { httpJson } from './http';
 
 const BASE_URL = 'https://api.siliconflow.cn/v1/chat/completions';
-const DEFAULT_MODEL = 'zai-org/GLM-4.5V';
+const DEFAULT_MODEL = 'moonshotai/Kimi-K2-Instruct';
 
 type CreateChatBody = { 
   model: string; 
