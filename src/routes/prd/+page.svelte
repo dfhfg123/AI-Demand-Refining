@@ -1,6 +1,7 @@
 <script lang="ts">
   import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
+  import MultiSelect from '$lib/components/MultiSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
 
@@ -268,114 +269,75 @@
       </div>
 
       <!-- 2. 产品形态（必填） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70  rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
           产品形态 <span class="text-red-500 ml-1">*</span>
         </h3>
         <div>
-          <select 
-            bind:value={formData.productType} 
-            multiple 
-            size="4"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each productTypes as type}
-              <option value={type}>{type}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customProductType} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他产品形态..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.productType}
+            options={productTypes}
+            placeholder="请选择产品形态"
+            customInput={true}
+            customPlaceholder="添加其他产品形态..."
+            on:addCustom={({ detail }) => formData.customProductType = detail.value}
+          />
         </div>
       </div>
 
       <!-- 3. 目标用户（必填） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70  rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
           目标用户 <span class="text-red-500 ml-1">*</span>
         </h3>
         <div>
-          <select 
-            bind:value={formData.targetUser} 
-            multiple 
-            size="4"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each targetUsers as user}
-              <option value={user}>{user}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customTargetUser} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他目标用户..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.targetUser}
+            options={targetUsers}
+            placeholder="请选择目标用户"
+            customInput={true}
+            customPlaceholder="添加其他目标用户..."
+            on:addCustom={({ detail }) => formData.customTargetUser = detail.value}
+          />
         </div>
       </div>
 
       <!-- 4. 关键功能需求（必填） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70 rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
           关键功能需求 <span class="text-red-500 ml-1">*</span>
         </h3>
         <div>
-          <select 
-            bind:value={formData.keyFeatures} 
-            multiple 
-            size="6"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each keyFeatureOptions as feature}
-              <option value={feature}>{feature}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customFeatures} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他功能需求..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.keyFeatures}
+            options={keyFeatureOptions}
+            placeholder="请选择关键功能需求"
+            customInput={true}
+            customPlaceholder="添加其他功能需求..."
+            on:addCustom={({ detail }) => formData.customFeatures = detail.value}
+            maxHeight="300px"
+          />
         </div>
       </div>
 
       <!-- 5. 产品目标（可选） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70  rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
           产品目标
         </h3>
         <div>
-          <select 
-            bind:value={formData.productGoal} 
-            multiple 
-            size="4"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each productGoals as goal}
-              <option value={goal}>{goal}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customProductGoal} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他产品目标..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.productGoal}
+            options={productGoals}
+            placeholder="请选择产品目标"
+            customInput={true}
+            customPlaceholder="添加其他产品目标..."
+            on:addCustom={({ detail }) => formData.customProductGoal = detail.value}
+          />
         </div>
       </div>
     </div>
@@ -383,63 +345,44 @@
     <!-- 右侧：表单区域继续 -->
     <div class="space-y-6">
       <!-- 6. 技术栈（可选） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70  rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
           技术栈/开发语言
         </h3>
         <div>
-          <select 
-            bind:value={formData.techStack} 
-            multiple 
-            size="6"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each techStackOptions as tech}
-              <option value={tech}>{tech}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customTechStack} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他技术要求..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.techStack}
+            options={techStackOptions}
+            placeholder="请选择技术栈/开发语言"
+            customInput={true}
+            customPlaceholder="添加其他技术要求..."
+            on:addCustom={({ detail }) => formData.customTechStack = detail.value}
+            maxHeight="300px"
+          />
         </div>
       </div>
 
       <!-- 7. 商业模式（可选） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70  rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
           商业模式
         </h3>
         <div>
-          <select 
-            bind:value={formData.businessModel} 
-            multiple 
-            size="4"
-            class="w-full p-3 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
-          >
-            {#each businessModels as model}
-              <option value={model}>{model}</option>
-            {/each}
-          </select>
-          <div class="mt-2">
-            <input 
-              type="text" 
-              bind:value={formData.customBusinessModel} 
-              class="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm" 
-              placeholder="其他商业模式..."
-            />
-          </div>
+          <MultiSelect 
+            bind:selected={formData.businessModel}
+            options={businessModels}
+            placeholder="请选择商业模式"
+            customInput={true}
+            customPlaceholder="添加其他商业模式..."
+            on:addCustom={({ detail }) => formData.customBusinessModel = detail.value}
+          />
         </div>
       </div>
 
       <!-- 8. 竞品参考（可选） -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div class="bg-white/70 rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
           竞品参考
