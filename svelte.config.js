@@ -16,6 +16,15 @@ const config = {
       base: process.env.NODE_ENV === 'production' ? '/AI-Demand-Refining' : '',
     },
     prerender: {
+      entries: [
+        '/',
+        '/summarizer',
+        '/prd', 
+        '/interview',
+        '/tech-guide',
+        '/meeting',
+        '/competitive'
+      ],
       handleHttpError: 'warn'
     }
   }

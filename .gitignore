@@ -68,17 +68,11 @@ jspm_packages/
 .cache
 .parcel-cache
 
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
 
 # vuepress build output
 .vuepress/dist
 
 # Serverless directories
-.serverless
 
 # FuseBox cache
 .fusebox/
