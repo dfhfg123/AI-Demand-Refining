@@ -60,7 +60,7 @@
   <!-- 内容区域 -->
   <div class="relative">
     {#if text}
-      <div class="p-6 h-[600px] overflow-y-auto bg-gradient-to-b from-neutral-50/50 to-white/50">
+      <div class="p-6 h-[800px] overflow-y-auto bg-gradient-to-b from-neutral-50/50 to-white/50">
         <MarkdownView source={text} />
       </div>
     {:else}
