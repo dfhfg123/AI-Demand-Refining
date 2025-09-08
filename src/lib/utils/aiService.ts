@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { invokeSiliconFlowWithProgress, type ChatMessage, type ProgressCallback } from './api';
+import { invokeSiliconFlowWithProgress, type ChatMessage, type ProgressCallback, type StreamCallback } from './api';
 import { get } from 'svelte/store';
 import { apiKeyStore, selectedModelStore } from '../stores/api';
 
@@ -29,6 +29,11 @@ export const createAIService = () => {
     update(state => ({ ...state, progress, status }));
   };
 
+  // 流式内容回调函数
+  const onStream: StreamCallback = (chunk: string) => {
+    update(state => ({ ...state, result: state.result + chunk }));
+  };
+
   // 发起AI请求
   const invoke = async (messages: ChatMessage[], model?: string): Promise<void> => {
     const apiKey = get(apiKeyStore);
@@ -44,17 +49,17 @@ export const createAIService = () => {
     set({ loading: true, progress: 0, status: '', result: '', error: null });
 
     try {
-      const result = await invokeSiliconFlowWithProgress(
+      await invokeSiliconFlowWithProgress(
         apiKey,
         messages,
         onProgress,
-        selectedModel
+        selectedModel,
+        onStream
       );
       
       update(state => ({ 
         ...state, 
         loading: false, 
-        result, 
         progress: 100, 
         status: '完成' 
       }));

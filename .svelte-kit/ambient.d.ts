@@ -26,7 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const NODE_ENV: string;
+	export const TRAE_AI_SHELL_ID: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
 	export const INIT_CWD: string;
@@ -45,12 +45,10 @@ declare module '$env/static/private' {
 	export const npm_config_noproxy: string;
 	export const npm_config_registry: string;
 	export const npm_config_local_prefix: string;
-	export const ENABLE_IDE_INTEGRATION: string;
 	export const USER: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
 	export const CONDA_EXE: string;
-	export const CLAUDE_CODE_SSE_PORT: string;
 	export const SSH_AUTH_SOCK: string;
 	export const VSCODE_PROFILE_INITIALIZED: string;
 	export const __CF_USER_TEXT_ENCODING: string;
@@ -66,7 +64,7 @@ declare module '$env/static/private' {
 	export const __CFBundleIdentifier: string;
 	export const npm_command: string;
 	export const PWD: string;
-	export const ANTHROPIC_MODEL: string;
+	export const TERM_PRODUCT: string;
 	export const npm_lifecycle_event: string;
 	export const EDITOR: string;
 	export const npm_package_name: string;
@@ -95,9 +93,11 @@ declare module '$env/static/private' {
 	export const GIT_ASKPASS: string;
 	export const INFOPATH: string;
 	export const HOMEBREW_CELLAR: string;
+	export const GIT_PAGER: string;
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
+	export const NODE_ENV: string;
 }
 
 /**
@@ -127,7 +127,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		NODE_ENV: string;
+		TRAE_AI_SHELL_ID: string;
 		TERM_PROGRAM: string;
 		NODE: string;
 		INIT_CWD: string;
@@ -146,12 +146,10 @@ declare module '$env/dynamic/private' {
 		npm_config_noproxy: string;
 		npm_config_registry: string;
 		npm_config_local_prefix: string;
-		ENABLE_IDE_INTEGRATION: string;
 		USER: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
 		CONDA_EXE: string;
-		CLAUDE_CODE_SSE_PORT: string;
 		SSH_AUTH_SOCK: string;
 		VSCODE_PROFILE_INITIALIZED: string;
 		__CF_USER_TEXT_ENCODING: string;
@@ -167,7 +165,7 @@ declare module '$env/dynamic/private' {
 		__CFBundleIdentifier: string;
 		npm_command: string;
 		PWD: string;
-		ANTHROPIC_MODEL: string;
+		TERM_PRODUCT: string;
 		npm_lifecycle_event: string;
 		EDITOR: string;
 		npm_package_name: string;
@@ -196,9 +194,11 @@ declare module '$env/dynamic/private' {
 		GIT_ASKPASS: string;
 		INFOPATH: string;
 		HOMEBREW_CELLAR: string;
+		GIT_PAGER: string;
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
+		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

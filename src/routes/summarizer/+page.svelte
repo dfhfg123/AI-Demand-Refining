@@ -150,12 +150,9 @@
           on:click={summarize} 
           disabled={!$apiKeyStore || !input || loading}
         >
-          <!-- 进度条背景 -->
-          {#if loading && progress > 0}
-            <div 
-              class="absolute inset-0 bg-primary-400/30 transition-all duration-300 ease-out"
-              style="width: {progress}%"
-            ></div>
+          <!-- 进度条背景 - 仅在思考阶段显示 -->
+          {#if loading && (!result || result.length === 0)}
+            <div class="absolute inset-0 bg-primary-400/20 animate-pulse"></div>
           {/if}
           
           <span class="flex items-center justify-center space-x-2 relative z-10">
@@ -164,7 +161,13 @@
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <span>{status || '正在处理...'} {progress}%</span>
+              <span>
+                {#if result && result.length > 0}
+                  正在生成内容...
+                {:else}
+                  正在分析文档...
+                {/if}
+              </span>
             {:else}
               <span>🤖</span>
               <span>生成总结</span>
@@ -172,11 +175,15 @@
           </span>
         </button>
         
-        <!-- 简化的进度信息 -->
-        {#if loading && status}
+        <!-- 状态信息 -->
+        {#if loading}
           <div class="mt-3 text-center">
             <div class="text-xs text-neutral-500">
-              {status}
+              {#if result && result.length > 0}
+                正在实时生成内容，请查看下方结果区域
+              {:else}
+                正在连接AI服务并分析文档内容...
+              {/if}
             </div>
           </div>
         {/if}

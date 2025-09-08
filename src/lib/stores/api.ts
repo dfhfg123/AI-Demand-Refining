@@ -5,7 +5,6 @@ import { load, save } from '$lib/utils/storage';
 export const availableModels = [
   { id: 'zai-org/GLM-4.5V', name: 'zai-org/GLM-4.5V' },
   { id: 'Qwen/Qwen3-235B-A22B-Thinking-2507', name: 'Qwen/Qwen3-235B-A22B-Thinking-2507' },
-  { id: 'Qwen/Qwen3-Embedding-0.6B', name: 'Qwen/Qwen3-Embedding-0.6B' },
   { id: 'deepseek-ai/DeepSeek-V3.1', name: 'deepseek-ai/DeepSeek-V3.1' },
   { id: 'ByteDance-Seed/Seed-OSS-36B-Instruct', name: 'ByteDance-Seed/Seed-OSS-36B-Instruct' },
   { id: 'moonshotai/Kimi-K2-Instruct', name: 'moonshotai/Kimi-K2-Instruct' },

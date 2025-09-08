@@ -56,7 +56,7 @@
   const generateAnswer = async () => {
     if (!$apiKeyStore) return;
     if (!input.trim()) {
-      alert('请输入面试经历内容');
+      alert('输出面经');
       return;
     }
     
@@ -165,7 +165,7 @@
       <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
         <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
           <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
-          面试经历 <span class="text-red-500 ml-1">*</span>
+          面经 <span class="text-red-500 ml-1">*</span>
         </h3>
         <div>
           <textarea 
