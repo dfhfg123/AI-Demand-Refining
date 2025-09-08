@@ -6,6 +6,7 @@
   import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
 
   let input = '';
+  let isDeepMode = true; // 默认深度模式
   
   // 使用统一的AI服务
   const aiService = createAIService();
@@ -52,15 +53,60 @@
     ].join('\n');
   };
 
+  // 面试官提示词（广度模式）
+  const buildInterviewPromptBroad = (doc: string): string => {
+    return [
+      '你是一位资深技术面试者，具备极强的逻辑表达能力和技术广度，熟悉计算机体系结构、网络协议、前端工程化、浏览器原理、算法与系统设计。',
+      '我会给你一份候选人的面试题，其中包含多个问题。',
+      '',
+      '你的任务是：',
+      '',
+      '自动识别并逐条回答这些问题。回答时按顺序标好原题和序号。',
+      '',
+      '每个回答都要做到：',
+      '',
+      '广度覆盖：快速覆盖核心知识点，命中面试官的采分点；不要过度展开，保持条理和框架感。',
+      '• 基础题：点出关键词和核心机制即可，不要啰嗦解释原理，确保面试官认同你掌握；',
+      '• 扩展题：补充上下文和实际经验，特别是面试官可能不熟悉的领域，要提供简要背景和价值说明；',
+      '• 对比与分组：用排序、分组方式展现逻辑性（例如优先级、难易度、维度对比）；',
+      '',
+      '逻辑与话术：',
+      '• 结论先行：先给结论，再展开要点；',
+      '• 层次分明：用分点、分组或小标题组织答案；',
+      '• 自信简洁：语言流畅，避免犹豫或无关细节；',
+      '',
+      '潜力展示：',
+      '• 不只是答题，要体现全局思维和框架意识，让面试官看到潜力；',
+      '• 在答案中自然引导可能的追问（例如"如果深入，可以讨论xxx"）；',
+      '• 回答经验型问题时，使用 STAR 框架（背景/任务/行动/结果）简要说明价值。',
+      '',
+      '回答时直入主题，不要输出任何提示性话语（例如"以下是解答""最优答案"），只输出答案。',
+      '',
+      '算法题：提供简洁的思路 + 关键复杂度分析，如有必要提供伪代码，但不需要完整代码实现。',
+      '',
+      '项目/架构题：先给总结性结论，再列出背景、方案价值和对比，点到为止。',
+      '',
+      '输出的答案保持格式清晰易读（原题和答案之间换行，答案内部用分点/短段落组织）。',
+      '',
+      '以下是候选人的面经：',
+      '',
+      doc
+    ].join('\n');
+  };
+
   // 生成面试答案
   const generateAnswer = async () => {
     if (!$apiKeyStore) return;
     if (!input.trim()) {
-      alert('输出面经');
+      alert('输入面经');
       return;
     }
     
-    const prompt = buildInterviewPrompt(input.trim());
+    // 根据模式选择不同的提示词
+    const prompt = isDeepMode 
+      ? buildInterviewPrompt(input.trim())
+      : buildInterviewPromptBroad(input.trim());
+    
     await invokeWithPrompt(prompt, aiService);
   };
 
@@ -107,6 +153,17 @@
         <!-- 模型选择 -->
         <div class="flex-shrink-0">
           <ModelSelect inline={true} />
+        </div>
+        
+        <!-- 模式选择下拉框 -->
+        <div class="flex-shrink-0">
+          <select 
+            bind:value={isDeepMode}
+            class="w-full sm:w-40 px-3 py-1.5 text-sm border border-neutral-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+          >
+            <option value={true}>🔍 深度模式</option>
+            <option value={false}>🚀 广度模式</option>
+          </select>
         </div>
         
         <!-- 操作按钮 -->
@@ -163,10 +220,17 @@
     <div class="space-y-6">
       <!-- 输入框 -->
       <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-        <h3 class="text-lg font-semibold text-neutral-800 mb-4 flex items-center">
-          <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
-          面经 <span class="text-red-500 ml-1">*</span>
-        </h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-neutral-800 flex items-center">
+            <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
+            面经 <span class="text-red-500 ml-1">*</span>
+          </h3>
+          
+          <!-- 模式说明 -->
+          <div class="text-xs text-neutral-500 bg-neutral-50 px-3 py-1.5 rounded-full">
+            当前模式：{isDeepMode ? '🔍 深度模式' : '🚀 广度模式'}
+          </div>
+        </div>
         <div>
           <textarea 
             bind:value={input}
@@ -175,6 +239,40 @@
           ></textarea>
         </div>
       </div>
+
+      <!-- 模式说明 -->
+      <!-- <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 shadow-soft border border-blue-200/30">
+        <h3 class="text-lg font-semibold text-blue-800 mb-3 flex items-center">
+          <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+          💡 模式说明
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div class="bg-white/60 rounded-lg p-4">
+            <div class="flex items-center mb-2">
+              <span class="text-lg mr-2">🔍</span>
+              <span class="font-semibold text-blue-700">深度模式</span>
+            </div>
+            <ul class="text-blue-600 space-y-1">
+              <li>• 详细分析底层原理</li>
+              <li>• 提供完整代码实现</li>
+              <li>• 包含多种解法对比</li>
+              <li>• 适合深入学习和理解</li>
+            </ul>
+          </div>
+          <div class="bg-white/60 rounded-lg p-4">
+            <div class="flex items-center mb-2">
+              <span class="text-lg mr-2">🚀</span>
+              <span class="font-semibold text-blue-700">广度模式</span>
+            </div>
+            <ul class="text-blue-600 space-y-1">
+              <li>• 快速覆盖核心知识点</li>
+              <li>• 结论先行，简洁高效</li>
+              <li>• 突出面试采分点</li>
+              <li>• 适合快速复习和应试</li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
 
       <!-- 使用提示 -->
       <!-- <div class="bg-blue-50/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-blue-200/20">
