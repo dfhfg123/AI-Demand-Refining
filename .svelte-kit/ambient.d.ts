@@ -26,6 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
+	export const NODE_ENV: string;
 	export const TRAE_AI_SHELL_ID: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -97,7 +98,6 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
-	export const NODE_ENV: string;
 }
 
 /**
@@ -127,6 +127,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
+		NODE_ENV: string;
 		TRAE_AI_SHELL_ID: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -198,7 +199,6 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
-		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

@@ -5,7 +5,12 @@
 
   type Nav = { href: string; label: string; icon?: string };
   export let items: Nav[] = [];
-  const active = derived(page, ($p) => $p.url.pathname);
+  // 获取相对于基路径的当前路径
+  const active = derived(page, ($p) => {
+    const pathname = $p.url.pathname;
+    // 移除基路径，获取相对路径
+    return pathname.replace(base, '') || '/';
+  });
   
   // 添加图标映射
   const iconMap: Record<string, string> = {
