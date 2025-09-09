@@ -26,7 +26,6 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const NODE_ENV: string;
 	export const TRAE_AI_SHELL_ID: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -46,6 +45,7 @@ declare module '$env/static/private' {
 	export const npm_config_noproxy: string;
 	export const npm_config_registry: string;
 	export const npm_config_local_prefix: string;
+	export const http_proxy: string;
 	export const USER: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
@@ -75,6 +75,7 @@ declare module '$env/static/private' {
 	export const XPC_FLAGS: string;
 	export const ANTHROPIC_API_KEY: string;
 	export const npm_config_node_gyp: string;
+	export const https_proxy: string;
 	export const npm_package_version: string;
 	export const XPC_SERVICE_NAME: string;
 	export const VSCODE_INJECTION: string;
@@ -98,6 +99,7 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_config_prefix: string;
 	export const COLORTERM: string;
+	export const NODE_ENV: string;
 }
 
 /**
@@ -127,7 +129,6 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		NODE_ENV: string;
 		TRAE_AI_SHELL_ID: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -147,6 +148,7 @@ declare module '$env/dynamic/private' {
 		npm_config_noproxy: string;
 		npm_config_registry: string;
 		npm_config_local_prefix: string;
+		http_proxy: string;
 		USER: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
@@ -176,6 +178,7 @@ declare module '$env/dynamic/private' {
 		XPC_FLAGS: string;
 		ANTHROPIC_API_KEY: string;
 		npm_config_node_gyp: string;
+		https_proxy: string;
 		npm_package_version: string;
 		XPC_SERVICE_NAME: string;
 		VSCODE_INJECTION: string;
@@ -199,6 +202,7 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_config_prefix: string;
 		COLORTERM: string;
+		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

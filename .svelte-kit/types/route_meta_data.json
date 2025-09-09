@@ -6,6 +6,9 @@
 	"/competitive": [
 		"src/routes/+layout.js"
 	],
+	"/interview-analysis": [
+		"src/routes/+layout.js"
+	],
 	"/interview": [
 		"src/routes/+layout.js"
 	],
