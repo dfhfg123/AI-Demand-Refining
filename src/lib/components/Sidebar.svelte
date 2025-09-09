@@ -17,7 +17,8 @@
     "/": "🏠",
     "/summarizer": "📝",
     "/prd": "📋",
-    "/interview": "💼"
+    "/interview": "💼",
+    "/interview-analysis": "🎤"
   };
   
   // 处理带有基路径的href
@@ -43,7 +44,7 @@
   <!-- 导航菜单 -->
   <div class="flex-1 p-4 space-y-2">
     {#each items as item}
-      {@const isActive = $active === item.href || ($active !== '/' && item.href !== '/' && $active.startsWith(item.href))}
+      {@const isActive = $active === item.href || ($active !== '/' && item.href !== '/' && item.href !== '/interview' && $active.startsWith(item.href)) || (item.href === '/interview' && $active === '/interview')}
       <a 
         href={getFullHref(item.href)}
         class="group relative flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-primary-50 hover:shadow-soft"
