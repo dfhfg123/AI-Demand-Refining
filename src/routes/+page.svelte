@@ -27,6 +27,13 @@
       description: "一键把面经转为面试官想听的答案，狠狠背八股！",
       href: "/interview",
       color: "from-indigo-500 to-purple-600"
+    },
+    {
+      icon: "🎤",
+      title: "面试表现分析",
+      description: "上传面试录音，AI为你提供专业的表现分析和改进建议，助你面试无忧！",
+      href: "/interview-analysis",
+      color: "from-purple-500 to-pink-600"
     }
   ];
 </script>
