@@ -15,6 +15,21 @@
       href: "/summarizer",
       color: "from-blue-500 to-indigo-600",
     },
+        {
+      icon: "🎤",
+      title: "面试表现评估",
+      description:
+        "上传面试录音，帮你转为面经，并分析面试表现、改进建议、评估面试通过率！",
+      href: "/interview-analysis",
+      color: "from-purple-500 to-pink-600",
+    },
+        {
+      icon: "💼",
+      title: "面经转八股",
+      description: "一键把面经转为面试官想听的答案，狠狠背八股！",
+      href: "/interview",
+      color: "from-indigo-500 to-purple-600",
+    },
     {
       icon: "📋",
       title: "PRD 生成器",
@@ -23,21 +38,8 @@
       href: "/prd",
       color: "from-purple-500 to-pink-600",
     },
-    {
-      icon: "💼",
-      title: "面经转八股",
-      description: "一键把面经转为面试官想听的答案，狠狠背八股！",
-      href: "/interview",
-      color: "from-indigo-500 to-purple-600",
-    },
-    {
-      icon: "🎤",
-      title: "面试表现分析",
-      description:
-        "上传面试录音，AI为你提供专业的表现分析和改进建议，助你面试无忧！",
-      href: "/interview-analysis",
-      color: "from-purple-500 to-pink-600",
-    },
+
+
   ];
 </script>
 
@@ -46,14 +48,14 @@
   <div class="fixed top-4 right-4 z-50 hidden lg:block">
     <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-soft border border-white/20 text-center">
       <p class="text-sm font-medium text-neutral-800 ">
-        Prompt Hub摸鱼交流群
+        Prompt Hub摸鱼群
       </p>
        <div class="font-mono text-blue-600 mb-1">365469688</div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center">
         <img 
           src="{base}/qq.png" 
           alt="QQ群二维码" 
-          class="w-32 h-32 object-contain"
+          class="w-36 h-36 object-contain"
         />
       </div>
     </div>
@@ -71,16 +73,16 @@
       />
     </div>
     <h1 class="text-4xl sm:text-5xl font-bold text-neutral-800 mb-4">
-      欢迎使用 <span
+       <span
         class="bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent"
       >
         Prompt Hub</span
       >
     </h1>
     <p class="text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-      集成了多个 AI 驱动的生产力工具，帮你节省时间狠狠摸鱼！。
+      准备八股、面试复盘、工作提效、狠狠摸鱼！
       <br />
-      选择左侧功能或下方卡片开始体验。
+      <!-- 点击下方卡片或左侧导航栏试试吧！ -->
     </p>
   </div>
 

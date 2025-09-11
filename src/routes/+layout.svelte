@@ -38,10 +38,10 @@
         <Sidebar
           items={[
             { href: "/", label: "首页" },
-            { href: "/summarizer", label: "需求提炼专家" },
-            { href: "/prd", label: "PRD生成器" },
+            { href: "/interview-analysis", label: "面试表现分析" },
             { href: "/interview", label: "面经转八股" },
-            { href: "/interview-analysis", label: "面试表现分析" }
+            { href: "/prd", label: "PRD生成器" },
+            { href: "/summarizer", label: "需求提炼专家" }
           ]} />
       </div>
     </div>
@@ -65,17 +65,11 @@
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">首页</span>
       </a>
-      <a href={getFullHref("/summarizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/summarizer')}
-         class:text-neutral-500={!$active.startsWith('/summarizer')}>
+      <a href={getFullHref("/interview-analysis")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/interview-analysis')}
+         class:text-neutral-500={!$active.startsWith('/interview-analysis')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">提炼</span>
-      </a>
-      <a href={getFullHref("/prd")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/prd')}
-         class:text-neutral-500={!$active.startsWith('/prd')}>
-        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">PRD</span>
+        <span class="truncate">分析</span>
       </a>
       <a href={getFullHref("/interview")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/interview') && !$active.startsWith('/interview-analysis')}
@@ -83,11 +77,17 @@
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">面经</span>
       </a>
-      <a href={getFullHref("/interview-analysis")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/interview-analysis')}
-         class:text-neutral-500={!$active.startsWith('/interview-analysis')}>
+      <a href={getFullHref("/prd")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/prd')}
+         class:text-neutral-500={!$active.startsWith('/prd')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">分析</span>
+        <span class="truncate">PRD</span>
+      </a>
+      <a href={getFullHref("/summarizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/summarizer')}
+         class:text-neutral-500={!$active.startsWith('/summarizer')}>
+        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
+        <span class="truncate">提炼</span>
       </a>
     </div>
   </div>
