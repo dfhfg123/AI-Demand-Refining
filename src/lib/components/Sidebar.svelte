@@ -31,8 +31,12 @@
   <!-- 标题区域 -->
   <div class="p-6 border-b border-neutral-100">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center shadow-medium">
-        <span class="text-white font-bold text-lg">AI</span>
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-medium">
+        <img 
+          src="{base}/logo.png" 
+          alt="Prompt Hub Logo" 
+          class="w-10 h-10 object-contain rounded-xl"
+        />
       </div>
       <div>
         <h1 class="text-xl font-bold text-neutral-800">Prompt Hub</h1>
