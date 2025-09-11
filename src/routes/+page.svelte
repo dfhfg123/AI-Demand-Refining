@@ -15,20 +15,6 @@
       href: "/summarizer",
       color: "from-blue-500 to-indigo-600",
     },
-        {
-      icon: "🎤",
-      title: "面试表现分析",
-      description: "上传面试录音，AI为你提供专业的表现分析和改进建议，助你面试无忧！",
-      href: "/interview-analysis",
-      color: "from-purple-500 to-pink-600"
-    },
-        {
-      icon: "💼",
-      title: "面经转八股",
-      description: "一键把面经转为面试官想听的答案，狠狠背八股！",
-      href: "/interview",
-      color: "from-indigo-500 to-purple-600",
-    },
     {
       icon: "📋",
       title: "PRD 生成器",
@@ -37,10 +23,42 @@
       href: "/prd",
       color: "from-purple-500 to-pink-600",
     },
+    {
+      icon: "💼",
+      title: "面经转八股",
+      description: "一键把面经转为面试官想听的答案，狠狠背八股！",
+      href: "/interview",
+      color: "from-indigo-500 to-purple-600",
+    },
+    {
+      icon: "🎤",
+      title: "面试表现分析",
+      description:
+        "上传面试录音，AI为你提供专业的表现分析和改进建议，助你面试无忧！",
+      href: "/interview-analysis",
+      color: "from-purple-500 to-pink-600",
+    },
   ];
 </script>
 
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <!-- QQ群信息 - 右上角 -->
+  <div class="fixed top-4 right-4 z-50 hidden lg:block">
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-soft border border-white/20 text-center">
+      <p class="text-sm font-medium text-neutral-800 ">
+        Prompt Hub摸鱼交流群
+      </p>
+       <div class="font-mono text-blue-600 mb-1">365469688</div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center">
+        <img 
+          src="{base}/qq.png" 
+          alt="QQ群二维码" 
+          class="w-32 h-32 object-contain"
+        />
+      </div>
+    </div>
+  </div>
+
   <!-- 欢迎区域 -->
   <div class="text-center mb-12">
     <div
@@ -120,23 +138,4 @@
       </div>
     {/each}
   </div>
-
-  <!-- 底部信息 -->
-  <!-- <div class="mt-16 text-center">
-    <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-soft border border-white/20">
-      <h2 class="text-2xl font-bold text-neutral-800 mb-4">开始使用</h2>
-      <p class="text-neutral-600 mb-6 max-w-2xl mx-auto">
-        首次使用需要配置 API Key，请先选择任意功能页面进行配置。
-        所有数据都在本地存储，无需担心隐私问题。
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="/summarizer" class="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-3 rounded-xl font-medium hover:shadow-medium transition-all duration-200 hover:-translate-y-0.5">
-          开始体验
-        </a>
-        <a href="https://cloud.siliconflow.cn/me/account/ak" target="_blank" rel="noopener" class="bg-white text-primary-600 border border-primary-200 px-6 py-3 rounded-xl font-medium hover:bg-primary-50 transition-all duration-200">
-          获取 API Key
-        </a>
-      </div>
-    </div>
-  </div> -->
 </div>
