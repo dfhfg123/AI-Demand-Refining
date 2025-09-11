@@ -20,14 +20,14 @@
       <input 
         type="password"
         class="w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2 sm:py-3 bg-white/80 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 placeholder-neutral-400 text-xs sm:text-sm font-mono"
-        placeholder="填入 SiliconFlow API Key"
+        placeholder="填入 硅基流动 API Key"
         bind:value={$apiKeyStore}
         class:hidden={showKey}
       />
       <input 
         type="text"
         class="w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-2 sm:py-3 bg-white/80 border border-neutral-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 placeholder-neutral-400 text-xs sm:text-sm font-mono"
-        placeholder="填入 SiliconFlow API Key"
+        placeholder="填入 硅基流动 API Key"
         bind:value={$apiKeyStore}
         class:hidden={!showKey}
       />
@@ -60,7 +60,7 @@
       <svg class="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
       </svg>
-      <span class="hidden sm:inline">获取 API Key</span>
+      <span class="hidden sm:inline">免费获取 API Key</span>
       <span class="sm:hidden">获取</span>
     </a>
   </div>

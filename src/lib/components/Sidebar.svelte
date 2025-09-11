@@ -40,7 +40,7 @@
       </div>
       <div>
         <h1 class="text-xl font-bold text-neutral-800">Prompt Hub</h1>
-        <p class="text-xs text-neutral-500">程序员的摸鱼助手</p>
+        <p class="text-xs text-neutral-500">准备面试、工作提效</p>
       </div>
     </div>
   </div>
