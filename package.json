@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "dev": "pnpm -C app/web dev",
+    "build": "pnpm -C app/web build",
+    "build:gh-pages": "NODE_ENV=production pnpm -C app/web build:gh-pages",
+    "preview": "pnpm -C app/web preview --port 4173"
+  },
   "dependencies": {
     "marked": "^16.2.1",
     "@prompt-hub/web": "workspace:*",
