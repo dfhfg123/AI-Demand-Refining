@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import { derived } from "svelte/store";
     import { slide } from 'svelte/transition';
+    import ArrowDown from '~icons/i/ArrowDown';
 
     const qqNumber = "365469688";
     const qqUrl = "https://qm.qq.com/cgi-bin/qm/qr?k=eusCODc30Lp9vNzX1JlUeXPdTvt_NdS3&jump_from=webapi&authKey=BujGXUqD8suyhi0IM4gr2HDbgxVwtueZkh6Nffpus/2O3YvbDrgYwO+QGEm1Kymw";
@@ -43,9 +44,12 @@
         <span class="text-sm font-medium text-neutral-800">
           Prompt Hub 摸鱼群
         </span>
-        <svg class="ml-2 w-4 h-4 transition-transform duration-200" style="transform: rotate({expanded ? 0 : 180}deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24" on:click|stopPropagation={togglePanel}>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
+        <div on:click={togglePanel}>
+            <ArrowDown
+              class="ml-2 w-4 h-4 transition-transform duration-200"
+              style="transform: rotate({expanded ? 0 : 180}deg);"
+            />
+          </div>
       </div>
       <div class="font-mono text-blue-600 mb-1 relative inline-block">{qqNumber}</div>
       {#if expanded}

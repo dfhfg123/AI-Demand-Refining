@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import ArrowRight from '~icons/i/ArrowRight';
 
   // 处理带有基路径的href
   function getFullHref(href: string): string {
@@ -107,19 +108,7 @@
             class="inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
           >
             立即使用
-            <svg
-              class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
+            <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
           </a>
         </div>
       </div>

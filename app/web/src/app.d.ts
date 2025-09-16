@@ -3,3 +3,4 @@
 declare global {}
 export {};
 
+import 'unplugin-icons/types/svelte5.d.ts'
