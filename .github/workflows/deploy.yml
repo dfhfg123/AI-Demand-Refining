@@ -10,28 +10,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.4.1
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          version: 10.4.0
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.18.0
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules/.cache
+            **/.eslintcache
+          key: ${{ runner.os }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
+
       - name: Build
-        run: pnpm run build:gh-pages
+        run: pnpm run build
 
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build
+          path: ./app/web/build
 
   deploy:
     if: github.ref == 'refs/heads/main'

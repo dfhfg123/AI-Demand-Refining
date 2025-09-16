@@ -3,12 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "npm -C web dev",
-    "build": "npm -C web build",
-    "build:gh-pages": "NODE_ENV=production npm -C web build:gh-pages",
-    "preview": "npm -C web preview --port 4173"
-  },
   "exports": {
     ".": "./src/index.ts"
   },

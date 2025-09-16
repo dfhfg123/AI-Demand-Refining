@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "build:gh-pages": "NODE_ENV=production vite build",
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
