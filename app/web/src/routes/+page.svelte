@@ -44,22 +44,7 @@
 </script>
 
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-  <!-- QQ群信息 - 右上角 -->
-  <div class="fixed top-4 right-4 z-50 hidden lg:block">
-    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-soft border border-white/20 text-center">
-      <p class="text-sm font-medium text-neutral-800 ">
-        Prompt Hub摸鱼群
-      </p>
-       <div class="font-mono text-blue-600 mb-1">365469688</div>
-      <div class="bg-white p-4 rounded-xl shadow-sm border border-neutral-200 flex items-center justify-center">
-        <img 
-          src="{base}/qq.png" 
-          alt="QQ群二维码" 
-          class="w-36 h-36 object-contain"
-        />
-      </div>
-    </div>
-  </div>
+
 
   <!-- 欢迎区域 -->
   <div class="text-center mb-12">

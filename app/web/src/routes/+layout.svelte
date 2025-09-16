@@ -4,20 +4,21 @@
   import { base } from "$app/paths";
   import { derived } from "svelte/store";
   import Sidebar from "$lib/components/Sidebar.svelte";
+  import QQGroupPanel from "$lib/components/QQGroupPanel.svelte";
   // 确保 tailwind 全局生效
 
   const title = derived(page, ($p) => {
     const seg = $p.url.pathname.split("/").filter(Boolean).at(0) || "home";
     return seg === "home" ? "Prompt Hub" : `Prompt Hub | ${seg}`;
   });
-  
+
   // 获取相对于基路径的当前路径
   const active = derived(page, ($p) => {
     const pathname = $p.url.pathname;
     // 移除基路径，获取相对路径
     return pathname.replace(base, '') || '/';
   });
-  
+
   // 处理带有基路径的href
   function getFullHref(href: string): string {
     return `${base}${href}`;
@@ -45,7 +46,7 @@
           ]} />
       </div>
     </div>
-    
+
     <!-- 主内容区域 -->
     <div class="flex-1 overflow-hidden">
       <main class="h-full overflow-y-auto pb-16 md:pb-0">
@@ -55,7 +56,7 @@
       </main>
     </div>
   </div>
-  
+
   <!-- 移动端底部导航 -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-2 py-2 z-50">
     <div class="flex justify-around items-center max-w-sm mx-auto">
@@ -91,6 +92,7 @@
       </a>
     </div>
   </div>
+  <QQGroupPanel />
 </div>
 
 <style>
