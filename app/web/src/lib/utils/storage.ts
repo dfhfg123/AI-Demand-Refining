@@ -1,6 +1,6 @@
 const KEY = 'ai-req-summarizer';
 
-export type PersistData = {
+export type PersistUserData = {
   apiKey?: string;
   selectedModel?: string;
   mode?: 'frontend' | 'api' | 'ui';
@@ -8,7 +8,7 @@ export type PersistData = {
   output?: string;
 };
 
-export const save = (data: PersistData) => {
+export const save = (data: PersistUserData) => {
   try {
     const prev = load();
     const merged = { ...(prev || {}), ...(data || {}) };
@@ -16,10 +16,10 @@ export const save = (data: PersistData) => {
   } catch (_) {}
 };
 
-export const load = (): PersistData | undefined => {
+export const load = (): PersistUserData | undefined => {
   try {
     const raw = localStorage.getItem(KEY) || '';
-    return raw ? (JSON.parse(raw) as PersistData) : undefined;
+    return raw ? (JSON.parse(raw) as PersistUserData) : undefined;
   } catch (_) {
     return undefined;
   }

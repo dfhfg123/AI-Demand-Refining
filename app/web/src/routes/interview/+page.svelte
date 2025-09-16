@@ -139,9 +139,9 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="grid gap-8">
     <!-- 左侧：输入区域 -->
-    <div class="space-y-6">
+    <div class="space-y-2">
       <!-- 输入框 -->
       <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
         <div class="flex items-center justify-between mb-4">
