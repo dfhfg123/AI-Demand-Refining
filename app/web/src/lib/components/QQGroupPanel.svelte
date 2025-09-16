@@ -6,7 +6,7 @@
     import ArrowDown from '~icons/i/ArrowDown';
 
     const qqNumber = "365469688";
-    const qqUrl = "https://qm.qq.com/cgi-bin/qm/qr?k=eusCODc30Lp9vNzX1JlUeXPdTvt_NdS3&jump_from=webapi&authKey=BujGXUqD8suyhi0IM4gr2HDbgxVwtueZkh6Nffpus/2O3YvbDrgYwO+QGEm1Kymw";
+    const qqUrl = "https://qm.qq.com/q/d1qvMcRP8c";
     const isHome = derived(page, ($p) => {
       const path = $p.url.pathname.replace(base, "");
       return path === "/" || path === "";
