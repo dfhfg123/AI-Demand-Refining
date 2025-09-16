@@ -1,0 +1,25 @@
+{
+  "name": "@prompt-hub/request",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm -C web dev",
+    "build": "npm -C web build",
+    "build:gh-pages": "NODE_ENV=production npm -C web build:gh-pages",
+    "preview": "npm -C web preview --port 4173"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "marked": "^16.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.4.0"
+  }
+}

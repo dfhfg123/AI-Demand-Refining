@@ -5,8 +5,8 @@ import { httpJson } from './http';
 const BASE_URL = 'https://api.siliconflow.cn/v1/chat/completions';
 const DEFAULT_MODEL = 'moonshotai/Kimi-K2-Instruct';
 
-type CreateChatBody = { 
-  model: string; 
+type CreateChatBody = {
+  model: string;
   messages: ChatMessage[];
   temperature?: number;
   max_tokens?: number;
@@ -20,15 +20,15 @@ export type StreamCallback = (chunk: string) => void;
 
 // SSE流式AI调用服务（带降级机制）
 export const invokeSiliconFlowWithProgress = async (
-  apiKey: string, 
-  messages: ChatMessage[], 
+  apiKey: string,
+  messages: ChatMessage[],
   onProgress: ProgressCallback,
   model = DEFAULT_MODEL,
   onStream?: StreamCallback
 ): Promise<string> => {
   // 首先尝试流式输出
-  const streamBody = { 
-    model, 
+  const streamBody = {
+    model,
     messages,
     temperature: 0.3,
     max_tokens: 39999,
@@ -36,7 +36,7 @@ export const invokeSiliconFlowWithProgress = async (
   };
 
   onProgress(0, '正在连接AI服务...');
-  
+
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -61,44 +61,44 @@ export const invokeSiliconFlowWithProgress = async (
   }
 
   onProgress(10, '开始接收数据...');
-  
+
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
   let fullContent = '';
   let progress = 10;
-  
+
   while (true) {
     const { done, value } = await reader.read();
-    
+
     if (done) {
       onProgress(100, '生成完成');
       break;
     }
-    
+
     const chunk = decoder.decode(value, { stream: true });
     buffer += chunk;
-    
+
     const lines = buffer.split('\n');
     buffer = lines.pop() || '';
-    
+
     for (const line of lines) {
       if (line.startsWith('data: ')) {
         const data = line.slice(6).trim();
-        
+
         if (data === '[DONE]') {
           onProgress(100, '生成完成');
           return fullContent;
         }
-        
+
         if (data) {
           const parsed = JSON.parse(data);
           const content = parsed?.choices?.[0]?.delta?.content || '';
-          
+
           if (content) {
             fullContent += content;
             onStream?.(content);
-            
+
             progress = Math.min(90, 10 + Math.floor(fullContent.length / 10));
             onProgress(progress, '正在生成内容...');
           }
@@ -106,7 +106,7 @@ export const invokeSiliconFlowWithProgress = async (
       }
     }
   }
-  
+
   return fullContent;
 };
 
@@ -126,7 +126,7 @@ const fallbackToNonStream = async (
   };
 
   onProgress(20, '使用非流式模式...');
-  
+
   const response = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
@@ -143,12 +143,12 @@ const fallbackToNonStream = async (
   onProgress(80, '正在处理响应...');
   const data = await response.json();
   const content = data?.choices?.[0]?.message?.content || '';
-  
+
   onProgress(100, '生成完成');
   return content;
 };
 
-// 保留原有的非进度接口，供不需要进度的场景使用
+// 非进度接口，供不需要进度的场景使用
 export const invokeSiliconFlow = (apiKey: string, messages: ChatMessage[], model = DEFAULT_MODEL): Promise<any> => {
   const body: CreateChatBody = { model, messages };
   return httpJson<any>(BASE_URL, {

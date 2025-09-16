@@ -4,95 +4,19 @@
   import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
+  import { buildInterviewPrompt ,buildInterviewPromptBroad} from '@prompt-hub/prompt';
 
   let input = '';
   let isDeepMode = true; // 默认深度模式
-  
+
   // 使用统一的AI服务
   const aiService = createAIService();
-  
+
   // 响应式获取AI服务状态
   $: ({ loading, progress, status, result, error } = $aiService);
   $: output = result || error || '';
 
-  // 面试官提示词
-  const buildInterviewPrompt = (doc: string): string => {
-    return [
-      '你是一位资深技术面试官，深谙计算机体系结构、网络协议、前端工程化、浏览器原理、算法与系统设计。',
-      '我会给你一份候选人的面试题，其中包含多个问题。',
-      '',
-      '你的任务是：',
-      '',
-      '自动识别并逐条回答这些问题。回答时按顺序标好原题和序号',
-      '',
-      '每个回答都要做到：',
-      '',
-      '完整：覆盖核心流程，不遗漏关键步骤。',
-        '• 覆盖「核心流程/关键原理/最佳实践/常见陷阱/度量与优化」等面试官关心点；',
-  '• 采用轻结构：短段落 + 列表 + 必要代码块/示意；避免整段大段文字堆砌；',
-  '• 具体可操作：给出明确名词、机制、关键参数、常见配置或示例；',
-   '• 对于经典题目（如“URL→页面渲染、http三次握手、css布局等”），要回答的尽量全面完善，包含尽量多的细节',
-      '',
-      '深入：展开到关键的底层原理（例如协议交互细节、操作系统机制、浏览器内部实现等）。',
-      '',
-      '面试官视角：回答要精准切中面试官考察点，避免泛泛而谈。',
-      '',
-      '可能的追问：主动补充面试中可能被追问的延伸问题，展示思考深度。',
-      '',
-      '回答时直入主题，不要输出任何提示性话语（例如"以下是解答""最优答案"），只输出答案。',
-      '',
-      '算法题：提供思路分析 + 时间复杂度 + 可运行的 TypeScript/JavaScript 代码。如果有多种解法，一一列出，并分析面试官更喜欢哪种。',
-      '',
-      '项目/架构题：说明背景、选型原因、实现难点、解决方案及效果。',
-      '',
-      '输出的答案保持格式清晰易读',
-      '',
-      '以下是候选人的面经：',
-      '',
-      doc
-    ].join('\n');
-  };
 
-  // 面试官提示词（广度模式）
-  const buildInterviewPromptBroad = (doc: string): string => {
-    return [
-      '你是一位资深技术面试者，具备极强的逻辑表达能力和技术广度，熟悉计算机体系结构、网络协议、前端工程化、浏览器原理、算法与系统设计。',
-      '我会给你一份候选人的面试题，其中包含多个问题。',
-      '',
-      '你的任务是：',
-      '',
-      '自动识别并逐条回答这些问题。回答时按顺序标好原题和序号。',
-      '',
-      '每个回答都要做到：',
-      '',
-      '广度覆盖：快速覆盖核心知识点，命中面试官的采分点；不要过度展开，保持条理和框架感。',
-      '• 基础题：点出关键词和核心机制即可，不要啰嗦解释原理，确保面试官认同你掌握；',
-      '• 扩展题：补充上下文和实际经验，特别是面试官可能不熟悉的领域，要提供简要背景和价值说明；',
-      '• 对比与分组：用排序、分组方式展现逻辑性（例如优先级、难易度、维度对比）；',
-      '',
-      '逻辑与话术：',
-      '• 结论先行：先给结论，再展开要点；',
-      '• 层次分明：用分点、分组或小标题组织答案；',
-      '• 自信简洁：语言流畅，避免犹豫或无关细节；',
-      '',
-      '潜力展示：',
-      '• 不只是答题，要体现全局思维和框架意识，让面试官看到潜力；',
-      '• 在答案中自然引导可能的追问（例如"如果深入，可以讨论xxx"）；',
-      '• 回答经验型问题时，使用 STAR 框架（背景/任务/行动/结果）简要说明价值。',
-      '',
-      '回答时直入主题，不要输出任何提示性话语（例如"以下是解答""最优答案"），只输出答案。',
-      '',
-      '算法题：提供简洁的思路 + 关键复杂度分析，如有必要提供伪代码，但不需要完整代码实现。',
-      '',
-      '项目/架构题：先给总结性结论，再列出背景、方案价值和对比，点到为止。',
-      '',
-      '输出的答案保持格式清晰易读（原题和答案之间换行，答案内部用分点/短段落组织）。',
-      '',
-      '以下是候选人的面经：',
-      '',
-      doc
-    ].join('\n');
-  };
 
   // 生成面试答案
   const generateAnswer = async () => {
@@ -101,12 +25,12 @@
       alert('输入面经');
       return;
     }
-    
+
     // 根据模式选择不同的提示词
-    const prompt = isDeepMode 
+    const prompt = isDeepMode
       ? buildInterviewPrompt(input.trim())
       : buildInterviewPromptBroad(input.trim());
-    
+
     await invokeWithPrompt(prompt, aiService);
   };
 
@@ -134,7 +58,7 @@
         <p class="text-neutral-600">输入面经，生成专业的满分答案</p>
       </div>
     </div>
-    
+
     <!-- API Key 配置区域 -->
     <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
       <!-- 标题 -->
@@ -142,22 +66,22 @@
         <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
         API 配置
       </h3>
-      
+
       <!-- 配置内容 - 移动端垂直布局，桌面端水平布局 -->
       <div class="flex flex-col sm:flex-row sm:items-center gap-4">
         <!-- API Key 输入 -->
         <div class="flex-1 sm:max-w-md">
           <ApiKeyPanel inline={true} />
         </div>
-        
+
         <!-- 模型选择 -->
         <div class="flex-shrink-0">
           <ModelSelect inline={true} />
         </div>
-        
+
         <!-- 模式选择下拉框 -->
         <div class="flex-shrink-0">
-          <select 
+          <select
             bind:value={isDeepMode}
             class="w-full sm:w-40 px-3 py-1.5 text-sm border border-neutral-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
           >
@@ -165,22 +89,22 @@
             <option value={false}>🚀 广度模式</option>
           </select>
         </div>
-        
+
         <!-- 操作按钮 -->
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-3">
-          <button 
+          <button
             class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-neutral-300 disabled:to-neutral-400 text-white font-medium py-3 px-6 rounded-xl shadow-medium hover:shadow-strong disabled:shadow-none transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed relative overflow-hidden w-full sm:w-auto"
-            on:click={generateAnswer} 
+            on:click={generateAnswer}
             disabled={!$apiKeyStore || loading}
           >
             <!-- 进度条背景 -->
             {#if loading && progress > 0}
-              <div 
+              <div
                 class="absolute inset-0 bg-indigo-400/30 transition-all duration-300 ease-out"
                 style="width: {progress}%"
               ></div>
             {/if}
-            
+
             <span class="flex items-center justify-center space-x-2 relative z-10">
               {#if loading}
                 <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
@@ -194,8 +118,8 @@
               {/if}
             </span>
           </button>
-          
-          <button 
+
+          <button
             on:click={resetAll}
             class="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium rounded-xl transition-colors duration-200 w-full sm:w-auto"
           >
@@ -203,7 +127,7 @@
           </button>
         </div>
       </div>
-      
+
       <!-- 简化的进度信息 -->
       {#if loading && status}
         <div class="mt-3 text-center">
@@ -225,14 +149,14 @@
             <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
             面经 <span class="text-red-500 ml-1">*</span>
           </h3>
-          
+
           <!-- 模式说明 -->
           <div class="text-xs text-neutral-500 bg-neutral-50 px-3 py-1.5 rounded-full">
             当前模式：{isDeepMode ? '🔍 深度模式' : '🚀 广度模式'}
           </div>
         </div>
         <div>
-          <textarea 
+          <textarea
             bind:value={input}
             class="w-full h-96 p-4 border border-neutral-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
             placeholder="输入一份面经，我会告诉你满分回答，快拿去背吧！"

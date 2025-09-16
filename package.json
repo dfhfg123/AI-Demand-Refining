@@ -4,26 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "build:gh-pages": "NODE_ENV=production vite build",
-    "preview": "vite preview --port 4173"
+    "dev": "pnpm -C app/web dev",
+    "build": "pnpm -C app/web build",
+    "build:gh-pages": "NODE_ENV=production pnpm -C app/web build:gh-pages",
+    "preview": "pnpm -C app/web preview --port 4173"
   },
   "dependencies": {
-    "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/kit": "^2.5.0",
     "marked": "^16.2.1",
-    "svelte": "^4.2.0"
+    "@prompt-hub/web": "workspace:*",
+    "@prompt-hub/prompt": "workspace:*",
+    "@prompt-hub/request": "workspace:*"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^3.0.9",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "svelte2tsx": "^0.7.42",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.4.0",
-    "vite": "^5.2.0"
+    "typescript": "^5.4.0"
   }
 }
