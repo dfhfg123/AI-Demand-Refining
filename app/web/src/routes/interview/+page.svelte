@@ -18,34 +18,40 @@
   // 双向绑定input和store
   $: interviewInputStore.set(input);
 
-  $: aiStream = useAIStream("interview");
-  $: state = aiStream.state;
-  $: ({ progress, status, result, error } = $state);
-  $: statusTip = aiStream.statusTip;
-  $: output = result || error || "";
-  $: loading = status !== "done" && status !== "error" && status !== "idle";
+  $: aiStreamDeep = useAIStream("interview-deep");
+  $: aiStreamBroad = useAIStream("interview-broad");
+  $: stateDeep = aiStreamDeep.state;
+  $: stateBroad = aiStreamBroad.state;
+  $: ({ progress: progressDeep, status: statusDeep, result: resultDeep, error: errorDeep } = $stateDeep);
+  $: ({ progress: progressBroad, status: statusBroad, result: resultBroad, error: errorBroad } = $stateBroad);
+  $: statusTipDeep = aiStreamDeep.statusTip;
+  $: statusTipBroad = aiStreamBroad.statusTip;
+  $: outputDeep = resultDeep || errorDeep || "";
+  $: outputBroad = resultBroad || errorBroad || "";
+  $: loadingDeep = statusDeep !== "done" && statusDeep !== "error" && statusDeep !== "idle";
+  $: loadingBroad = statusBroad !== "done" && statusBroad !== "error" && statusBroad !== "idle";
 
-  // 生成面试答案
+  // 生成面试答案（同时触发深度和广度）
   const generateAnswer = async () => {
     if (!$apiKeyStore) return;
     if (!input.trim()) {
       alert("输入面经");
       return;
     }
-
-    // 根据模式选择不同的提示词
-    const prompt = isDeepMode
-      ? buildInterviewPrompt(input.trim())
-      : buildInterviewPromptBroad(input.trim());
-
-    await aiStream.invoke(prompt);
+    const promptDeep = buildInterviewPrompt(input.trim());
+    const promptBroad = buildInterviewPromptBroad(input.trim());
+    await Promise.all([
+      aiStreamDeep.invoke(promptDeep),
+      aiStreamBroad.invoke(promptBroad)
+    ]);
   };
 
   // 重置
   const resetAll = () => {
     input = "";
-    interviewInputStore.set('');
-    aiStream.reset();
+    interviewInputStore.set("");
+    aiStreamDeep.reset();
+    aiStreamBroad.reset();
   };
 </script>
 
@@ -107,20 +113,26 @@
           <button
             class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-neutral-300 disabled:to-neutral-400 text-white font-medium py-3 px-6 rounded-xl shadow-medium hover:shadow-strong disabled:shadow-none transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed relative overflow-hidden w-full sm:w-auto"
             on:click={generateAnswer}
-            disabled={!$apiKeyStore || loading}
+            disabled={!$apiKeyStore || loadingDeep || loadingBroad}
           >
             <!-- 进度条背景 -->
-            {#if loading && progress > 0}
+            {#if loadingDeep && progressDeep > 0}
               <div
                 class="absolute inset-0 bg-indigo-400/30 transition-all duration-300 ease-out"
-                style="width: {progress}%"
+                style="width: {progressDeep}%"
+              ></div>
+            {/if}
+            {#if loadingBroad && progressBroad > 0}
+              <div
+                class="absolute inset-0 bg-blue-400/30 transition-all duration-300 ease-out"
+                style="width: {progressBroad}%"
               ></div>
             {/if}
 
             <span
               class="flex items-center justify-center space-x-2 relative z-10"
             >
-              {#if loading}
+              {#if loadingDeep}
                 <svg
                   class="animate-spin h-4 w-4"
                   fill="none"
@@ -140,7 +152,7 @@
                     d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <span class="text-sm">{$statusTip || "处理中..."}</span>
+                <span class="text-sm">{$statusTipDeep || "处理中..."}</span>
               {:else}
                 <span>🎯</span>
                 <span>生成结果</span>
@@ -158,11 +170,19 @@
       </div>
 
       <!-- 简化的进度信息 -->
-      {#if loading && status}
+      {#if loadingDeep && statusDeep}
         <div class="mt-3 text-center">
           <div class="text-xs text-neutral-500">
-            {$statusTip}
-            {progress}%
+            {$statusTipDeep}
+            {progressDeep}%
+          </div>
+        </div>
+      {/if}
+      {#if loadingBroad && statusBroad}
+        <div class="mt-3 text-center">
+          <div class="text-xs text-neutral-500">
+            {$statusTipBroad}
+            {progressBroad}%
           </div>
         </div>
       {/if}
@@ -249,8 +269,21 @@
     </div>
 
     <!-- 右侧：输出区域 -->
-    <div>
-      <ResultView text={output} />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+      <div>
+        <h3 class="text-lg font-semibold text-neutral-800 mb-2 flex items-center">
+          <span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
+          深度模式结果
+        </h3>
+        <ResultView text={outputDeep} />
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-neutral-800 mb-2 flex items-center">
+          <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+          广度模式结果
+        </h3>
+        <ResultView text={outputBroad} />
+      </div>
     </div>
   </div>
 </div>
