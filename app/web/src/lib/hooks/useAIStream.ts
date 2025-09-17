@@ -59,10 +59,8 @@ export function useAIStream(id: string): AIStream {
       return;
     }
 
-    abortController?.abort();
+    reset();
     abortController = new AbortController();
-
-    // reset();
 
     const onProgress = (progress: number, status: AIStreamStatus) =>
       state.update((state) => ({ ...state, progress, status }));
