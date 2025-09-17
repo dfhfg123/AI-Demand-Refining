@@ -1,28 +1,35 @@
 <script lang="ts">
-  import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
-  import ResultView from '$lib/components/ResultView.svelte';
-  import ModelSelect from '$lib/components/ModelSelect.svelte';
-  import { apiKeyStore } from '$lib/stores/api';
-  import { createAIService, invokeWithPrompt } from '$lib/utils/aiService';
-  import { buildInterviewPrompt ,buildInterviewPromptBroad} from '@prompt-hub/prompt';
+  import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
+  import ResultView from "$lib/components/ResultView.svelte";
+  import ModelSelect from "$lib/components/ModelSelect.svelte";
+  import { apiKeyStore } from "$lib/stores/api";
+  import { interviewInputStore } from '$lib/stores/api';
+  import {
+    buildInterviewPrompt,
+    buildInterviewPromptBroad,
+  } from "@prompt-hub/prompt";
+  import {useAIStream } from "$lib/hooks/useAIStream";
 
-  let input = '';
+  let input = "";
   let isDeepMode = true; // 默认深度模式
 
-  // 使用统一的AI服务
-  const aiService = createAIService();
+  // 初始化input为store的值
+  $: input = $interviewInputStore;
+  // 双向绑定input和store
+  $: interviewInputStore.set(input);
 
-  // 响应式获取AI服务状态
-  $: ({ loading, progress, status, result, error } = $aiService);
-  $: output = result || error || '';
-
-
+  $: aiStream = useAIStream("interview");
+  $: state = aiStream.state;
+  $: ({ progress, status, result, error } = $state);
+  $: statusTip = aiStream.statusTip;
+  $: output = result || error || "";
+  $: loading = status !== "done" && status !== "error" && status !== "idle";
 
   // 生成面试答案
   const generateAnswer = async () => {
     if (!$apiKeyStore) return;
     if (!input.trim()) {
-      alert('输入面经');
+      alert("输入面经");
       return;
     }
 
@@ -31,13 +38,14 @@
       ? buildInterviewPrompt(input.trim())
       : buildInterviewPromptBroad(input.trim());
 
-    await invokeWithPrompt(prompt, aiService);
+    await aiStream.invoke(prompt);
   };
 
   // 重置
   const resetAll = () => {
-    input = '';
-    aiService.reset();
+    input = "";
+    interviewInputStore.set('');
+    aiStream.reset();
   };
 </script>
 
@@ -50,7 +58,9 @@
   <!-- 页面头部 -->
   <div class="mb-8">
     <div class="flex items-center space-x-4 mb-6">
-      <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-medium">
+      <div
+        class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-medium"
+      >
         <span class="text-white text-xl">💼</span>
       </div>
       <div>
@@ -60,7 +70,9 @@
     </div>
 
     <!-- API Key 配置区域 -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+    <div
+      class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
+    >
       <!-- 标题 -->
       <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
         <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
@@ -105,13 +117,30 @@
               ></div>
             {/if}
 
-            <span class="flex items-center justify-center space-x-2 relative z-10">
+            <span
+              class="flex items-center justify-center space-x-2 relative z-10"
+            >
               {#if loading}
-                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  class="animate-spin h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
-                <span class="text-sm">{status || '处理中...'}</span>
+                <span class="text-sm">{$statusTip || "处理中..."}</span>
               {:else}
                 <span>🎯</span>
                 <span>生成结果</span>
@@ -132,7 +161,8 @@
       {#if loading && status}
         <div class="mt-3 text-center">
           <div class="text-xs text-neutral-500">
-            {status} {progress}%
+            {$statusTip}
+            {progress}%
           </div>
         </div>
       {/if}
@@ -143,7 +173,9 @@
     <!-- 左侧：输入区域 -->
     <div class="space-y-2">
       <!-- 输入框 -->
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
+      <div
+        class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
+      >
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-neutral-800 flex items-center">
             <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
@@ -151,8 +183,10 @@
           </h3>
 
           <!-- 模式说明 -->
-          <div class="text-xs text-neutral-500 bg-neutral-50 px-3 py-1.5 rounded-full">
-            当前模式：{isDeepMode ? '🔍 深度模式' : '🚀 广度模式'}
+          <div
+            class="text-xs text-neutral-500 bg-neutral-50 px-3 py-1.5 rounded-full"
+          >
+            当前模式：{isDeepMode ? "🔍 深度模式" : "🚀 广度模式"}
           </div>
         </div>
         <div>
@@ -220,5 +254,3 @@
     </div>
   </div>
 </div>
-
-

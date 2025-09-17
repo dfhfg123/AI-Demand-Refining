@@ -16,6 +16,25 @@ const defaultModel = 'moonshotai/Kimi-K2-Instruct';
 
 export const apiKeyStore = writable<string>(persisted?.apiKey || '');
 export const selectedModelStore = writable<string>(persisted?.selectedModel || defaultModel);
+export const interviewInputStore = writable('');
+export const summarizerInputStore = writable('');
+export const prdFormStore = writable({
+  productDescription: '',
+  productType: [],
+  customProductType: '',
+  targetUser: [],
+  customTargetUser: '',
+  keyFeatures: [],
+  customFeatures: '',
+  productGoal: [],
+  customProductGoal: '',
+  techStack: [],
+  customTechStack: '',
+  businessModel: [],
+  customBusinessModel: '',
+  competitors: ''
+});
+export const interviewAnalysisInputStore = writable('');
 
 // 确保默认模型被正确保存
 if (!persisted?.selectedModel) {

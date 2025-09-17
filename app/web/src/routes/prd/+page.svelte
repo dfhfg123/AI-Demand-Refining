@@ -4,9 +4,9 @@
   import MultiSelect from "$lib/components/MultiSelect.svelte";
   import ModelSelect from "$lib/components/ModelSelect.svelte";
   import { apiKeyStore } from "$lib/stores/api";
-  import { createAIService, invokeWithPrompt } from "$lib/utils/aiService";
+  import { prdFormStore } from '$lib/stores/api';
   import {buildPRDPrompt as getPRDPrompt } from '@prompt-hub/prompt';
-
+  import {  useAIStream } from '$lib/hooks/useAIStream';
 
   // 表单数据
   let formData = {
@@ -25,13 +25,15 @@
     customBusinessModel: "",
     competitors: "",
   };
+  $: formData = $prdFormStore;
+  $: prdFormStore.set(formData);
 
-  // 使用统一的AI服务
-  const aiService = createAIService();
-
-  // 响应式获取AI服务状态
-  $: ({ loading, progress, status, result, error } = $aiService);
+  $: aiStream = useAIStream("prd");
+  $: state = aiStream.state;
+  $: ({ progress, status, result, error } = $state);
+  $: statusTip = aiStream.statusTip;
   $: output = result || error || "";
+  $: loading = status !== "done" && status !== "error" && status !== "idle";
 
   // 预设选项
   const productTypes = [
@@ -186,7 +188,7 @@
     }
 
     const prompt = buildPRDPrompt();
-    await invokeWithPrompt(prompt, aiService);
+    await aiStream.invoke(prompt);
   };
 
   // 重置表单
@@ -207,7 +209,8 @@
       customBusinessModel: "",
       competitors: "",
     };
-    aiService.reset();
+    prdFormStore.set(formData);
+    aiStream.reset();
   };
 </script>
 
@@ -501,7 +504,7 @@
         {#if loading && status}
           <div class="mt-3 text-center">
             <div class="text-xs text-neutral-500">
-              {status}
+              {statusTip}
             </div>
           </div>
         {/if}
