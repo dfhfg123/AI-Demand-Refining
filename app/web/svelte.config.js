@@ -13,7 +13,7 @@ const config = {
       strict: true
     }),
     paths: {
-      base: '',
+      base: process.env.NODE_ENV === 'production' ? '/demo' : '',
     },
     prerender: {
       entries: [
