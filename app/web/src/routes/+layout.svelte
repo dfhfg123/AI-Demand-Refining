@@ -39,6 +39,7 @@
         <Sidebar
           items={[
             { href: "/", label: "首页" },
+            { href: "/requirement-evaluation", label: "这b需求能不能做" },
             { href: "/interview-analysis", label: "面试表现分析" },
             { href: "/interview", label: "面经转八股" },
             { href: "/prd", label: "PRD生成器" },
@@ -66,11 +67,11 @@
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">首页</span>
       </a>
-      <a href={getFullHref("/interview-analysis")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/interview-analysis')}
-         class:text-neutral-500={!$active.startsWith('/interview-analysis')}>
+      <a href={getFullHref("/requirement-evaluation")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/requirement-evaluation')}
+         class:text-neutral-500={!$active.startsWith('/requirement-evaluation')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">分析</span>
+        <span class="truncate">评估</span>
       </a>
       <a href={getFullHref("/interview")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/interview') && !$active.startsWith('/interview-analysis')}

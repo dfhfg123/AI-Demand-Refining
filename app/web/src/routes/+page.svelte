@@ -16,6 +16,14 @@
       href: "/summarizer",
       color: "from-blue-500 to-indigo-600",
     },
+    {
+      icon: "🤔",
+      title: "这b需求能不能做",
+      description:
+        "智能分析需求可行性，结合你的经验和摸鱼时间，给出靠谱的排期建议！",
+      href: "/requirement-evaluation",
+      color: "from-orange-500 to-red-600",
+    },
         {
       icon: "🎤",
       title: "面试表现评估",

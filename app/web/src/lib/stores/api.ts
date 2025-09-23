@@ -35,6 +35,12 @@ export const prdFormStore = writable({
   competitors: ''
 });
 export const interviewAnalysisInputStore = writable('');
+export const requirementEvaluationStore = writable({
+  requirement: '',
+  experience: '1-3年',
+  workHours: '8-9小时',
+  slackTime: '1小时'
+});
 
 // 确保默认模型被正确保存
 if (!persisted?.selectedModel) {
