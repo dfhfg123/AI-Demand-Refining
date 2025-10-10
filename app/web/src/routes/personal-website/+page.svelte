@@ -6,7 +6,15 @@
   import { useAIStream } from "$lib/hooks/useAIStream";
 
   // 表单数据
-  let introduction = "";
+  let formData = {
+    name: "",
+    profession: "",
+    skills: "",
+    background: "",
+    contactType: "email" as "email" | "wechat" | "github",
+    contactValue: ""
+  };
+  
   let githubToken = "";
   let gistUrl = "";
   let isDeploying = false;
@@ -39,14 +47,57 @@
     return text;
   }
 
+  // 构建自我介绍文本
+  function buildIntroduction(): string {
+    let intro = "";
+
+    // 基本信息
+    if (formData.name || formData.profession) {
+      intro += `## 基本信息\n`;
+      if (formData.name) intro += `姓名：${formData.name}\n`;
+      if (formData.profession) intro += `职业：${formData.profession}\n`;
+      intro += `\n`;
+    }
+
+    // 技能和爱好
+    if (formData.skills.trim()) {
+      intro += `## 技能和爱好\n${formData.skills}\n\n`;
+    }
+
+    // 背景经历
+    if (formData.background.trim()) {
+      intro += `## 教育背景/工作经历\n${formData.background}\n\n`;
+    }
+
+    // 联系方式
+    const contacts = [];
+    if (formData.contactValue) {
+      const typeMap = {
+        email: "邮箱",
+        wechat: "微信",
+        github: "GitHub"
+      };
+      contacts.push(`${typeMap[formData.contactType]}：${formData.contactValue}`);
+    }
+    
+    if (contacts.length > 0) {
+      intro += `## 联系方式\n${contacts.join("\n")}\n`;
+    }
+
+    return intro;
+  }
+
   // 生成个人网站
   async function generateWebsite() {
     if (!$apiKeyStore) return;
-    if (!introduction.trim()) {
-      alert("请输入自我介绍");
+    
+    // 验证必填项
+    if (!formData.name.trim() || !formData.profession.trim()) {
+      alert("请至少填写姓名和职业");
       return;
     }
 
+    const introduction = buildIntroduction();
     const prompt = buildPersonalWebsitePrompt() + "\n\n" + introduction;
     await aiStream.invoke(prompt);
   }
@@ -111,7 +162,14 @@
 
   // 重置
   function resetAll() {
-    introduction = "";
+    formData = {
+      name: "",
+      profession: "",
+      skills: "",
+      background: "",
+      contactType: "email",
+      contactValue: ""
+    };
     githubToken = "";
     gistUrl = "";
     aiStream.reset();
@@ -153,7 +211,7 @@
 
 <svelte:head>
   <title>个人网站生成器 - Prompt Hub</title>
-  <meta name="description" content="输入自我介绍，AI 生成专业的多页面个人网站，支持实时查看代码和预览" />
+  <meta name="description" content="填写表单信息，AI 生成专业的多页面个人网站，支持实时查看代码和预览" />
 </svelte:head>
 
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -167,7 +225,7 @@
       </div>
       <div>
         <h1 class="text-3xl font-bold text-neutral-800">个人网站生成器</h1>
-        <p class="text-neutral-600">输入自我介绍，AI 生成专业的多页面个人网站（含路由系统）</p>
+        <p class="text-neutral-600">填写表单信息，AI 生成专业的多页面个人网站（含路由系统）</p>
       </div>
     </div>
 
@@ -193,7 +251,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- 左侧：输入区域 -->
     <div class="space-y-6">
-      <!-- 自我介绍 -->
+      <!-- 基本信息 -->
       <div
         class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
       >
@@ -201,13 +259,97 @@
           class="text-lg font-semibold text-neutral-800 mb-4 flex items-center"
         >
           <span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span>
-          自我介绍 <span class="text-red-500 ml-1">*</span>
+          基本信息 <span class="text-red-500 ml-1">*</span>
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block text-sm font-medium text-neutral-700 mb-2">
+              姓名 <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="name"
+              type="text"
+              bind:value={formData.name}
+              class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+              placeholder="例如：张三"
+            />
+          </div>
+          <div>
+            <label for="profession" class="block text-sm font-medium text-neutral-700 mb-2">
+              职业 <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="profession"
+              type="text"
+              bind:value={formData.profession}
+              class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+              placeholder="例如：全栈开发工程师"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- 技能和爱好 -->
+      <div
+        class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
+      >
+        <h3
+          class="text-lg font-semibold text-neutral-800 mb-4 flex items-center"
+        >
+          <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+          技能和爱好
+        </h3>
+        <input
+          type="text"
+          bind:value={formData.skills}
+          class="w-full px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+          placeholder="例如：前端开发、UI设计、摄影、阅读"
+        />
+      </div>
+
+      <!-- 背景经历 -->
+      <div
+        class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
+      >
+        <h3
+          class="text-lg font-semibold text-neutral-800 mb-4 flex items-center"
+        >
+          <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+          教育背景/工作经历
         </h3>
         <textarea
-          bind:value={introduction}
-          class="w-full h-64 p-4 border border-neutral-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
-          placeholder="请输入你的自我介绍，包括：&#10;&#10;• 姓名和职业&#10;• 技能和专长&#10;• 项目经历或作品&#10;• 教育背景&#10;• 兴趣爱好&#10;• 联系方式（邮箱、GitHub、LinkedIn等）&#10;&#10;AI 会生成包含多个页面（首页、关于、项目、联系等）的完整个人网站！&#10;支持实时切换查看代码和预览效果。"
+          bind:value={formData.background}
+          class="w-full h-32 p-4 border border-neutral-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+          placeholder="请输入你的教育背景或工作经历，例如：&#10;&#10;• 2018-2022 某某大学 计算机科学与技术&#10;• 2022-至今 某某公司 高级前端工程师&#10;• 负责公司核心产品的前端架构设计..."
         ></textarea>
+      </div>
+
+      <!-- 联系方式 -->
+      <div
+        class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
+      >
+        <h3
+          class="text-lg font-semibold text-neutral-800 mb-4 flex items-center"
+        >
+          <span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+          联系方式 <span class="text-neutral-500 text-sm font-normal ml-2">(可选)</span>
+        </h3>
+        <div class="flex gap-3">
+          <select
+            bind:value={formData.contactType}
+            class="px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors bg-white"
+          >
+            <option value="email">📧 邮箱</option>
+            <option value="wechat">💬 微信</option>
+            <option value="github">🐙 GitHub</option>
+          </select>
+          <input
+            type="text"
+            bind:value={formData.contactValue}
+            class="flex-1 px-4 py-2 border border-neutral-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+            placeholder={formData.contactType === "email" ? "your@email.com" : formData.contactType === "wechat" ? "your-wechat-id" : "github.com/username"}
+          />
+        </div>
       </div>
 
       <!-- 生成按钮 -->
