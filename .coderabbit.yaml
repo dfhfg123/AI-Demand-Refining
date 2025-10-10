@@ -1,0 +1,18 @@
+review:
+  enabled: true
+  auto_review_on_open: true
+  auto_review_on_update: true
+  summarize_comments: true
+  comment_tone: friendly
+  max_comments: 15
+
+  rules:
+    - title: "Code style"
+      description: "Enforce consistent code style and linting."
+      enabled: true
+    - title: "Security"
+      description: "Identify potential security vulnerabilities."
+      enabled: true
+    - title: "Performance"
+      description: "Flag possible performance issues."
+      enabled: true

@@ -24,7 +24,7 @@
       href: "/requirement-evaluation",
       color: "from-orange-500 to-red-600",
     },
-        {
+    {
       icon: "🎤",
       title: "面试表现评估",
       description:
@@ -32,7 +32,7 @@
       href: "/interview-analysis",
       color: "from-purple-500 to-pink-600",
     },
-        {
+    {
       icon: "💼",
       title: "面经转八股",
       description: "一键把面经转为面试官想听的答案，狠狠背八股！",
@@ -47,8 +47,14 @@
       href: "/prd",
       color: "from-purple-500 to-pink-600",
     },
-
-
+    {
+      icon: "🌐",
+      title: "个人网站生成器",
+      description:
+        "输入自我介绍，AI 生成专业的多页面个人网站（含路由），实时查看代码和预览，一键部署！",
+      href: "/personal-website",
+      color: "from-cyan-500 to-blue-600",
+    },
   ];
 </script>
 

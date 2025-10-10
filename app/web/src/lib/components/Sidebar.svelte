@@ -18,7 +18,8 @@
     "/summarizer": "📝",
     "/prd": "📋",
     "/interview": "💼",
-    "/interview-analysis": "🎤"
+    "/interview-analysis": "🎤",
+    "/personal-website": "🌐"
   };
   
   // 处理带有基路径的href
