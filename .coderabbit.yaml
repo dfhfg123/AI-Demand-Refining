@@ -1,3 +1,34 @@
+language: zh-CN
+reviews:
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  tools:
+    ruff:
+      enabled: true
+    markdownlint:
+      enabled: true
+    github-checks:
+      enabled: true
+      timeout: 5m
+
+chat:
+  auto_reply: true
+
+instructions: |
+  请使用简体中文生成所有代码审查评论和总结。
+  要求：
+  - 所有评论必须使用简体中文
+  - 保持语气专业、礼貌且简洁
+  - Summary 部分使用中文
+  - 代码建议和解释使用中文
+  - 保持友好的评论风格
+
 review:
   enabled: true
   auto_review_on_open: true
@@ -5,11 +36,7 @@ review:
   summarize_comments: true
   comment_tone: friendly
   max_comments: 15
-  language: zh-CN  # 👈 新增这一行
-  prompt: >
-    请使用简体中文生成所有代码审查评论和总结，
-    保持语气专业、礼貌且简洁。
-
+  
   rules:
     - title: "代码风格"
       description: "检查代码风格一致性和 lint 规范。"
