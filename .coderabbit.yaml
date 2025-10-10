@@ -5,14 +5,18 @@ review:
   summarize_comments: true
   comment_tone: friendly
   max_comments: 15
+  language: zh-CN  # 👈 新增这一行
+  prompt: >
+    请使用简体中文生成所有代码审查评论和总结，
+    保持语气专业、礼貌且简洁。
 
   rules:
-    - title: "Code style"
-      description: "Enforce consistent code style and linting."
+    - title: "代码风格"
+      description: "检查代码风格一致性和 lint 规范。"
       enabled: true
-    - title: "Security"
-      description: "Identify potential security vulnerabilities."
+    - title: "安全"
+      description: "识别潜在的安全漏洞。"
       enabled: true
-    - title: "Performance"
-      description: "Flag possible performance issues."
+    - title: "性能"
+      description: "标记可能的性能问题。"
       enabled: true
