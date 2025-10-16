@@ -17,6 +17,14 @@
       color: "from-purple-500 to-pink-600",
     },
     {
+      icon: "🔍",
+      title: "PR Review 助手",
+      description:
+        "输入GitHub PR链接，AI自动分析代码变更，生成专业的审查意见和改进建议！",
+      href: "/pr-review",
+      color: "from-green-500 to-teal-600",
+    },
+    {
       icon: "📝",
       title: "需求提炼专家",
       description:

@@ -217,3 +217,155 @@ export const buildPromptOptimizer = (userPrompt: string): string => {
   return buildPromptOptimizerPrompt(userPrompt?.trim() || '');
 };
 
+// PR Review 提示词构建
+export const buildPRReviewPrompt = (prInfo: any, template: string): string => {
+  const baseContext = [
+    '你是一位资深代码审查专家，擅长发现代码问题并提供建设性建议。',
+    '',
+    `### PR 基本信息`,
+    `- 标题：${prInfo.title}`,
+    `- 作者：${prInfo.author}`,
+    `- 变更统计：${prInfo.changedFiles} 个文件，+${prInfo.additions}/-${prInfo.deletions} 行`,
+    '',
+    `### PR 描述`,
+    prInfo.description,
+    '',
+  ].join('\n');
+
+  // 构建文件变更详情
+  const filesDetail = prInfo.files
+    .map((file: any, index: number) => {
+      return [
+        `### 文件 ${index + 1}: ${file.filename}`,
+        `状态：${file.status}`,
+        `变更：+${file.additions}/-${file.deletions}`,
+        '',
+        '```diff',
+        file.patch || '(二进制文件或无变更内容)',
+        '```',
+        ''
+      ].join('\n');
+    })
+    .join('\n');
+
+  // 根据不同模板生成不同的审查重点
+  const templateInstructions = getReviewTemplateInstructions(template);
+
+  return [
+    baseContext,
+    filesDetail,
+    '',
+    '### 审查要求',
+    templateInstructions,
+    '',
+    '### 输出格式',
+    '请按照以下结构输出审查意见：',
+    '',
+    '## 📋 审查总结',
+    '用1-2句话总结这个PR的主要变更和整体质量。',
+    '',
+    '## ⭐ 亮点',
+    '列出代码中做得好的地方（如果有）。',
+    '',
+    '## ⚠️ 问题和建议',
+    '按优先级列出发现的问题和改进建议，格式：',
+    '- **[严重/重要/建议]** `文件名:行号` - 问题描述及建议',
+    '',
+    '## ✅ 审查结论',
+    '给出明确的结论：',
+    '- ✅ **建议合并** - 代码质量良好，可以合并',
+    '- ⚠️ **建议修改后合并** - 有一些需要优化的地方',
+    '- ❌ **不建议合并** - 存在严重问题，需要重大修改',
+    '',
+    '请用中文输出，保持专业、客观、建设性的态度。'
+  ].join('\n');
+};
+
+function getReviewTemplateInstructions(template: string): string {
+  switch (template) {
+    case 'security':
+      return [
+        '请重点关注以下安全问题：',
+        '1. SQL注入、XSS、CSRF等常见安全漏洞',
+        '2. 敏感信息泄露（密码、token、密钥等）',
+        '3. 权限验证和访问控制',
+        '4. 输入验证和数据清洗',
+        '5. 加密算法使用是否恰当',
+        '6. 依赖包的安全性'
+      ].join('\n');
+    
+    case 'performance':
+      return [
+        '请重点关注以下性能问题：',
+        '1. 算法复杂度和时间复杂度',
+        '2. 数据库查询优化（N+1问题、索引使用等）',
+        '3. 内存泄漏风险',
+        '4. 循环和递归的效率',
+        '5. 缓存策略',
+        '6. 资源加载和打包优化',
+        '7. 异步处理和并发控制'
+      ].join('\n');
+    
+    case 'code-style':
+      return [
+        '请重点关注以下代码规范问题：',
+        '1. 命名规范（变量、函数、类等）',
+        '2. 代码格式和缩进',
+        '3. 注释的完整性和准确性',
+        '4. 代码重复（DRY原则）',
+        '5. 函数长度和复杂度',
+        '6. 模块化和文件组织',
+        '7. 类型定义（如TypeScript）',
+        '8. 代码可读性'
+      ].join('\n');
+    
+    case 'business-logic':
+      return [
+        '请重点关注以下业务逻辑问题：',
+        '1. 业务流程的完整性',
+        '2. 边界条件和异常处理',
+        '3. 数据一致性',
+        '4. 状态管理',
+        '5. 并发场景下的正确性',
+        '6. 回滚和补偿机制',
+        '7. 业务规则的实现是否准确'
+      ].join('\n');
+    
+    case 'comprehensive':
+    default:
+      return [
+        '请进行全面的代码审查，关注：',
+        '',
+        '**功能正确性**',
+        '- 代码逻辑是否正确',
+        '- 是否满足需求',
+        '- 边界条件处理',
+        '',
+        '**代码质量**',
+        '- 命名规范',
+        '- 代码可读性',
+        '- 注释完整性',
+        '- 代码重复',
+        '',
+        '**性能**',
+        '- 算法效率',
+        '- 数据库查询优化',
+        '- 资源使用',
+        '',
+        '**安全性**',
+        '- 常见安全漏洞',
+        '- 权限控制',
+        '- 数据验证',
+        '',
+        '**可维护性**',
+        '- 代码结构',
+        '- 模块化程度',
+        '- 测试覆盖',
+        '',
+        '**最佳实践**',
+        '- 设计模式应用',
+        '- 框架使用规范',
+        '- 错误处理'
+      ].join('\n');
+  }
+}
