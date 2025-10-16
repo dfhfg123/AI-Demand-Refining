@@ -39,6 +39,7 @@
         <Sidebar
           items={[
             { href: "/", label: "首页" },
+            { href: "/prompt-optimizer", label: "提示词优化专家" },
             { href: "/requirement-evaluation", label: "这b需求能不能做" },
             { href: "/interview-analysis", label: "面试表现分析" },
             { href: "/interview", label: "面经转八股" },
@@ -68,6 +69,12 @@
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">首页</span>
       </a>
+      <a href={getFullHref("/prompt-optimizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/prompt-optimizer')}
+         class:text-neutral-500={!$active.startsWith('/prompt-optimizer')}>
+        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
+        <span class="truncate">优化</span>
+      </a>
       <a href={getFullHref("/requirement-evaluation")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/requirement-evaluation')}
          class:text-neutral-500={!$active.startsWith('/requirement-evaluation')}>
@@ -85,12 +92,6 @@
          class:text-neutral-500={!$active.startsWith('/prd')}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">PRD</span>
-      </a>
-      <a href={getFullHref("/personal-website")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
-         class:text-primary-600={$active.startsWith('/personal-website')}
-         class:text-neutral-500={!$active.startsWith('/personal-website')}>
-        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
-        <span class="truncate">网站</span>
       </a>
       <a href={getFullHref("/summarizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/summarizer')}

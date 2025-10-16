@@ -9,6 +9,14 @@
 
   const features = [
     {
+      icon: "✨",
+      title: "提示词优化专家",
+      description:
+        "输入任何提示词，AI会根据4-D方法论为你优化，让AI更懂你的意图！",
+      href: "/prompt-optimizer",
+      color: "from-purple-500 to-pink-600",
+    },
+    {
       icon: "📝",
       title: "需求提炼专家",
       description:
