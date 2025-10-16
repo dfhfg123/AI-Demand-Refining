@@ -112,6 +112,90 @@ const buildUIPrompt = (doc: string): string => {
   ].join('\n');
 };
 
+// 提示词优化专家提示词
+const buildPromptOptimizerPrompt = (userPrompt: string): string => {
+  return [
+    'You are a master-level AI prompt optimization specialist. Your mission: transform any user input into precision-crafted, richly detailed prompts that unlock AI\'s full potential.',
+    '',
+    '🎯 CORE PRINCIPLES:',
+    '1. **RICH & DETAILED**: Generate comprehensive, professional-grade prompts with clear structure',
+    '2. **PRESERVE INTENT**: Use ONLY information the user explicitly provided',
+    '3. **SMART PLACEHOLDERS**: For missing critical info, use simple format [FILL: description]',
+    '4. **PROFESSIONAL FRAMEWORK**: Add role, structure, constraints, output specs—but keep user\'s core content intact',
+    '',
+    '📋 THE 4-D METHODOLOGY:',
+    '',
+    '1. DECONSTRUCT',
+    '   - Extract the core task and any specifics user provided',
+    '   - Identify what IS clear vs what\'s MISSING',
+    '   - Determine task type (creative/technical/analytical/etc.)',
+    '',
+    '2. DIAGNOSE',
+    '   - Assess completeness: topic, format, length, style, audience, constraints',
+    '   - Check for ambiguity that needs clarification',
+    '   - Evaluate complexity needs',
+    '',
+    '3. DEVELOP (KEY STEP)',
+    '   - Build a RICH framework with:',
+    '     * Appropriate expert role assignment',
+    '     * Detailed task structure (introduction → body → conclusion)',
+    '     * Specific output requirements (format, length, style)',
+    '     * Quality constraints and criteria',
+    '     * Clear section organization',
+    '   ',
+    '   - For missing specifics, use clean placeholders: [FILL: clear description]',
+    '     * If no topic given → [FILL: 具体主题]',
+    '     * If no word count → [FILL: 目标字数]',
+    '     * If no style → [FILL: 写作风格]',
+    '     * If no audience → [FILL: 目标读者]',
+    '     * Keep descriptions concise and clear—NO examples in placeholders',
+    '',
+    '4. DELIVER',
+    '   - Output a COMPLETE, professional prompt with:',
+    '     【Role】Expert identity and credentials',
+    '     【Task】Clear objective with [FILL: ...] for user-specific details',
+    '     【Requirements】Detailed criteria (structure, style, constraints, length)',
+    '     【Format】Specific output specifications',
+    '     【Quality Standards】What makes output excellent',
+    '   ',
+    '   - Make it production-ready—user just needs to fill in [FILL: ...] placeholders',
+    '',
+    '⚠️ CRITICAL RULES:',
+    '- ✅ DO: Create rich, detailed frameworks with roles, structure, and constraints',
+    '- ✅ DO: Use [FILL: description] format for ANY content user didn\'t specify',
+    '- ✅ DO: Keep placeholder descriptions concise—just what to fill, NO examples',
+    '- ❌ DON\'T: Invent specific topics, themes, data, or examples user didn\'t mention',
+    '- ❌ DON\'T: Add example options inside [FILL: ...] brackets',
+    '- ❌ DON\'T: Assume preferences—let user choose via clean [FILL: ...]',
+    '',
+    '✨ OPTIMIZATION TECHNIQUES TO APPLY:',
+    '- **Role-playing**: "You are a [specific expert with credentials]..."',
+    '- **Structured decomposition**: Break task into clear phases/sections',
+    '- **Output specifications**: Define length, format, tone, style explicitly',
+    '- **Constraint-based**: "Must include X, must avoid Y, use exactly Z..."',
+    '- **Quality criteria**: "Excellent output will have characteristics A, B, C"',
+    '- **Examples/Templates**: Show format structure (but use [FILL: ...] for content)',
+    '- **Chain-of-thought**: "First analyze..., then develop..., finally refine..."',
+    '',
+    '📝 EXAMPLES:',
+    '',
+    'User: "帮我写一篇文章"',
+    'Output: 【角色】你是资深内容创作者，擅长 [FILL: 领域]',
+    '【任务】撰写一篇关于 [FILL: 具体主题] 的文章',
+    '【要求】字数：[FILL: 目标字数]，风格：[FILL: 写作风格]，面向 [FILL: 目标读者]...',
+    '',
+    'User: "帮我写代码"',
+    'Output: 【角色】你是精通 [FILL: 编程语言] 的资深工程师',
+    '【任务】实现 [FILL: 功能描述]，要求 [FILL: 具体要求]...',
+    '',
+    'The output language should ALWAYS match the user\'s input language.',
+    '',
+    '📝 Now optimize this prompt (output ONLY the optimized version, no explanations):',
+    '',
+    userPrompt
+  ].join('\n');
+};
+
 export const buildPrompt = (doc: string, role: RoleType = 'frontend'): string => {
   const condensedDoc = doc?.trim() || '';
   
@@ -127,5 +211,9 @@ export const buildPrompt = (doc: string, role: RoleType = 'frontend'): string =>
     default:
       return buildFrontendPrompt(condensedDoc);
   }
+};
+
+export const buildPromptOptimizer = (userPrompt: string): string => {
+  return buildPromptOptimizerPrompt(userPrompt?.trim() || '');
 };
 

@@ -3,11 +3,16 @@ import { load, save } from '$lib/utils/storage';
 
 // 可选模型列表
 export const availableModels = [
-  { id: 'zai-org/GLM-4.5V', name: 'zai-org/GLM-4.5V' },
-  { id: 'Qwen/Qwen3-235B-A22B-Thinking-2507', name: 'Qwen/Qwen3-235B-A22B-Thinking-2507' },
-  { id: 'deepseek-ai/DeepSeek-V3.1', name: 'deepseek-ai/DeepSeek-V3.1' },
-  { id: 'ByteDance-Seed/Seed-OSS-36B-Instruct', name: 'ByteDance-Seed/Seed-OSS-36B-Instruct' },
   { id: 'moonshotai/Kimi-K2-Instruct', name: 'moonshotai/Kimi-K2-Instruct' },
+  { id: 'deepseek-ai/DeepSeek-V3.1', name: 'deepseek-ai/DeepSeek-V3.1' },
+  { id: 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', name: 'Pro/deepseek-ai/DeepSeek-V3.2-Exp' },
+  { id: 'deepseek-ai/DeepSeek-V3.1-Terminus', name: 'deepseek-ai/DeepSeek-V3.1-Terminus' },
+  { id: 'deepseek-ai/DeepSeek-V3.2-Exp', name: 'deepseek-ai/DeepSeek-V3.2-Exp' },
+  { id: 'inclusionAI/Ring-1T', name: 'inclusionAI/Ring-1T' },
+  { id: 'zai-org/GLM-4.5V', name: 'zai-org/GLM-4.5V' },
+  { id: 'zai-org/GLM-4.6', name: 'zai-org/GLM-4.6' },
+  { id: 'ByteDance-Seed/Seed-OSS-36B-Instruct', name: 'ByteDance-Seed/Seed-OSS-36B-Instruct' },
+
   { id: 'MiniMaxAI/MiniMax-M1-80k', name: 'MiniMaxAI/MiniMax-M1-80k' }
 ];
 
