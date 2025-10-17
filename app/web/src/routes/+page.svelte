@@ -25,6 +25,14 @@
       color: "from-green-500 to-teal-600",
     },
     {
+      icon: "📄",
+      title: "简历优化助手",
+      description:
+        "上传PDF简历，AI三步优化：结构化解析→深度诊断→ATS友好重写，量化成果突出！",
+      href: "/resume-optimizer",
+      color: "from-indigo-500 to-purple-600",
+    },
+    {
       icon: "📝",
       title: "需求提炼专家",
       description:

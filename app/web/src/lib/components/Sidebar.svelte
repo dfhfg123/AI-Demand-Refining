@@ -17,6 +17,7 @@
     "/": "🏠",
     "/prompt-optimizer": "✨",
     "/pr-review": "🔍",
+    "/resume-optimizer": "📄",
     "/requirement-evaluation": "🤔",
     "/summarizer": "📝",
     "/prd": "📋",
