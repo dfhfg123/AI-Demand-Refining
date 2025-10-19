@@ -1,7 +1,5 @@
 <script lang="ts">
-  import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
   import ResultView from "$lib/components/ResultView.svelte";
-  import ModelSelect from "$lib/components/ModelSelect.svelte";
   import { apiKeyStore } from "$lib/stores/api";
   import { requirementEvaluationStore } from '$lib/stores/api';
   import { useAIStream } from '$lib/hooks/useAIStream';
@@ -120,21 +118,6 @@ ${formData.requirement}
       </div>
     </div>
 
-    <!-- API Key 配置区域 -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-soft border border-white/20">
-      <h3 class="text-base sm:text-lg font-semibold text-neutral-800 mb-3 sm:mb-4 flex items-center">
-        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-        API 配置
-      </h3>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div class="flex-1 sm:max-w-md">
-          <ApiKeyPanel inline={true} />
-        </div>
-        <div class="flex-shrink-0">
-          <ModelSelect inline={true} />
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- 主内容区域 -->

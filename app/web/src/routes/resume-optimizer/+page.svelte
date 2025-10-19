@@ -1,21 +1,28 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { browser } from '$app/environment';
-  import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
-  import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { buildResumeParsePrompt, buildResumeAnalyzePrompt, buildResumeOptimizePrompt } from '$lib/utils/prompt';
   import { useAIStream } from '$lib/hooks/useAIStream';
 
   let pdfjsLib: any = null;
+  let pdfLibLoading = true;
+  let pdfLibError = '';
 
   // 只在客户端加载 pdfjs-dist
   onMount(async () => {
     if (browser) {
-      pdfjsLib = await import('pdfjs-dist');
-      // 使用 unpkg CDN，更稳定
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+      try {
+        pdfjsLib = await import('pdfjs-dist');
+        // 使用 unpkg CDN，更稳定
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+        pdfLibLoading = false;
+      } catch (error) {
+        console.error('PDF库加载失败:', error);
+        pdfLibError = 'PDF库加载失败，请刷新页面重试';
+        pdfLibLoading = false;
+      }
     }
   });
 
@@ -245,22 +252,6 @@
         <p class="text-neutral-600">上传PDF简历，AI三步优化：结构化解析 → 深度诊断 → ATS友好重写</p>
       </div>
     </div>
-
-    <!-- API Key 配置区域 -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
-        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-        API 配置
-      </h3>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div class="flex-1 sm:max-w-md">
-          <ApiKeyPanel inline={true} />
-        </div>
-        <div class="flex-shrink-0">
-          <ModelSelect inline={true} />
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- 主内容区域 -->
@@ -299,11 +290,21 @@
             />
             <button
               on:click={() => fileInput?.click()}
-              disabled={isExtracting || loading || !pdfjsLib}
+              disabled={isExtracting || loading || pdfLibLoading || !!pdfLibError}
               class="px-6 py-3 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-medium rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               <span>📁</span>
-              <span>{selectedFile ? '重新选择文件' : pdfjsLib ? '选择PDF文件' : '加载中...'}</span>
+              <span>
+                {#if pdfLibError}
+                  {pdfLibError}
+                {:else if pdfLibLoading}
+                  初始化中...
+                {:else if selectedFile}
+                  重新选择文件
+                {:else}
+                  选择PDF文件
+                {/if}
+              </span>
             </button>
             {#if selectedFile}
               <div class="flex items-center space-x-2 text-sm text-neutral-600">

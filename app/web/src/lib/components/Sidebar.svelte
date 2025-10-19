@@ -2,9 +2,12 @@
   import { page } from "$app/stores";
   import { base } from "$app/paths";
   import { derived } from "svelte/store";
+  import SettingsModal from "$lib/components/SettingsModal.svelte";
 
   type Nav = { href: string; label: string; icon?: string };
   export let items: Nav[] = [];
+  
+  let isSettingsOpen = false;
   // 获取相对于基路径的当前路径
   const active = derived(page, ($p) => {
     const pathname = $p.url.pathname;
@@ -86,13 +89,28 @@
   </div>
   
   <!-- 底部信息 -->
-  <div class="p-4 border-t border-neutral-100">
+  <div class="p-4 border-t border-neutral-100 space-y-3">
+    <!-- 配置按钮 -->
+    <button
+      on:click={() => isSettingsOpen = true}
+      class="w-full px-4 py-3 bg-gradient-to-r from-neutral-100 to-neutral-50 hover:from-primary-50 hover:to-primary-100 border border-neutral-200 hover:border-primary-300 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 group"
+    >
+      <svg class="w-5 h-5 text-neutral-600 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <span class="text-sm font-medium text-neutral-700 group-hover:text-primary-600 transition-colors">高级设置</span>
+    </button>
+    
     <div class="text-xs text-neutral-400 text-center">
       <p>版本 v1.0.0</p>
       <p class="mt-1">由 AI 驱动的生产力工具</p>
     </div>
   </div>
 </nav>
+
+<!-- 设置模态框 -->
+<SettingsModal bind:isOpen={isSettingsOpen} />
 
 <style>
   /* 尽量少样式，主要交给 tailwind */
