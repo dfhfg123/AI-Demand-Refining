@@ -1,8 +1,6 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
-  import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { buildPromptOptimizer } from '$lib/utils/prompt';
   import { useAIStream } from '$lib/hooks/useAIStream';
@@ -77,28 +75,6 @@
       <div>
         <h1 class="text-3xl font-bold text-neutral-800">AI 提示词优化专家</h1>
         <p class="text-neutral-600">输入你的提示词，AI会帮你优化成更精准、更有效的版本</p>
-      </div>
-    </div>
-
-    <!-- API Key 配置区域 -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-      <!-- 标题 -->
-      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
-        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-        API 配置
-      </h3>
-
-      <!-- 配置内容 - 移动端垂直布局，桌面端水平布局 -->
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <!-- API Key 输入 -->
-        <div class="flex-1 sm:max-w-md">
-          <ApiKeyPanel inline={true} />
-        </div>
-
-        <!-- 模型选择 -->
-        <div class="flex-shrink-0">
-          <ModelSelect inline={true} />
-        </div>
       </div>
     </div>
   </div>

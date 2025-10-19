@@ -1,7 +1,5 @@
 <script lang="ts">
-  import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
   import ResultView from "$lib/components/ResultView.svelte";
-  import ModelSelect from "$lib/components/ModelSelect.svelte";
   import AudioUpload from "$lib/components/AudioUpload.svelte";
   import { apiKeyStore } from "$lib/stores/api";
   import { interviewAnalysisInputStore } from '$lib/stores/api';
@@ -146,77 +144,6 @@
     </p>
   </div>
 
-  <!-- API Key 配置和控制按钮 -->
-  <div
-    class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20 mb-6"
-  >
-    <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
-      <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-      配置与控制
-    </h3>
-
-    <!-- 第一行：API Key -->
-    <div class="mb-4">
-      <ApiKeyPanel inline={true} />
-    </div>
-
-    <!-- 第二行：模型选择、转录按钮、分析按钮 -->
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-      <!-- 模型选择 -->
-      <div class="flex-1 sm:max-w-xs">
-        <ModelSelect inline={true} />
-      </div>
-
-      <!-- 转录按钮 -->
-      <div class="flex-shrink-0">
-        <button
-          on:click={startTranscription}
-          disabled={!audioFile || isTranscribing}
-          class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-        >
-          {#if isTranscribing}
-            转录中... ({transcriptionProgress}%)
-          {:else}
-            开始转录
-          {/if}
-        </button>
-      </div>
-
-      <!-- 分析按钮 -->
-      <div class="flex-shrink-0">
-        <button
-          on:click={startAnalysis}
-          disabled={!transcribedText.trim() || loading}
-          class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:from-green-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 whitespace-nowrap"
-        >
-          {#if loading}
-            分析中... ({progress}%)
-          {:else}
-            开始分析
-          {/if}
-        </button>
-      </div>
-    </div>
-
-    <!-- 进度条 -->
-    {#if isTranscribing}
-      <div class="mt-4">
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div
-            class="bg-blue-500 h-2 rounded-full transition-all duration-300"
-            style="width: {transcriptionProgress}%"
-          ></div>
-        </div>
-      </div>
-    {/if}
-
-    {#if loading && status}
-      <div class="mt-4 text-sm text-blue-600">
-        {statusTip}
-      </div>
-    {/if}
-  </div>
-
   <!-- 主要内容区域 -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- 左侧：音频上传和转录 -->
@@ -257,6 +184,33 @@
             </p>
           </div>
         {/if}
+        
+        <!-- 操作按钮 -->
+        <div class="flex flex-col sm:flex-row gap-3 mt-4">
+          <button
+            on:click={startTranscription}
+            disabled={!audioFile || isTranscribing}
+            class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            {#if isTranscribing}
+              转录中... ({transcriptionProgress}%)
+            {:else}
+              开始转录
+            {/if}
+          </button>
+
+          <button
+            on:click={startAnalysis}
+            disabled={!transcribedText.trim() || loading}
+            class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            {#if loading}
+              分析中...
+            {:else}
+              开始分析
+            {/if}
+          </button>
+        </div>
       </div>
 
       <!-- 转录结果 -->

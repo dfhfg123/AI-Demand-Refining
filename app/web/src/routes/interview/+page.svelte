@@ -1,7 +1,5 @@
 <script lang="ts">
-  import ApiKeyPanel from "$lib/components/ApiKeyPanel.svelte";
   import ResultView from "$lib/components/ResultView.svelte";
-  import ModelSelect from "$lib/components/ModelSelect.svelte";
   import { apiKeyStore } from "$lib/stores/api";
   import { interviewInputStore } from '$lib/stores/api';
   import {
@@ -74,119 +72,6 @@
         <p class="text-neutral-600">输入面经，生成专业的满分答案</p>
       </div>
     </div>
-
-    <!-- API Key 配置区域 -->
-    <div
-      class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20"
-    >
-      <!-- 标题 -->
-      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
-        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-        API 配置
-      </h3>
-
-      <!-- 配置内容 - 移动端垂直布局，桌面端水平布局 -->
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <!-- API Key 输入 -->
-        <div class="flex-1 sm:max-w-md">
-          <ApiKeyPanel inline={true} />
-        </div>
-
-        <!-- 模型选择 -->
-        <div class="flex-shrink-0">
-          <ModelSelect inline={true} />
-        </div>
-
-        <!-- 模式选择下拉框 -->
-        <div class="flex-shrink-0">
-          <select
-            bind:value={isDeepMode}
-            class="w-full sm:w-40 px-3 py-1.5 text-sm border border-neutral-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-          >
-            <option value={true}>🔍 深度模式</option>
-            <option value={false}>🚀 广度模式</option>
-          </select>
-        </div>
-
-        <!-- 操作按钮 -->
-        <div class="flex flex-col sm:flex-row gap-3 sm:gap-3">
-          <button
-            class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-neutral-300 disabled:to-neutral-400 text-white font-medium py-3 px-6 rounded-xl shadow-medium hover:shadow-strong disabled:shadow-none transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed relative overflow-hidden w-full sm:w-auto"
-            on:click={generateAnswer}
-            disabled={!$apiKeyStore || loadingDeep || loadingBroad}
-          >
-            <!-- 进度条背景 -->
-            {#if loadingDeep && progressDeep > 0}
-              <div
-                class="absolute inset-0 bg-indigo-400/30 transition-all duration-300 ease-out"
-                style="width: {progressDeep}%"
-              ></div>
-            {/if}
-            {#if loadingBroad && progressBroad > 0}
-              <div
-                class="absolute inset-0 bg-blue-400/30 transition-all duration-300 ease-out"
-                style="width: {progressBroad}%"
-              ></div>
-            {/if}
-
-            <span
-              class="flex items-center justify-center space-x-2 relative z-10"
-            >
-              {#if loadingDeep}
-                <svg
-                  class="animate-spin h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                <span class="text-sm">{$statusTipDeep || "处理中..."}</span>
-              {:else}
-                <span>🎯</span>
-                <span>生成结果</span>
-              {/if}
-            </span>
-          </button>
-
-          <button
-            on:click={resetAll}
-            class="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium rounded-xl transition-colors duration-200 w-full sm:w-auto"
-          >
-            重置
-          </button>
-        </div>
-      </div>
-
-      <!-- 简化的进度信息 -->
-      {#if loadingDeep && statusDeep}
-        <div class="mt-3 text-center">
-          <div class="text-xs text-neutral-500">
-            {$statusTipDeep}
-            {progressDeep}%
-          </div>
-        </div>
-      {/if}
-      {#if loadingBroad && statusBroad}
-        <div class="mt-3 text-center">
-          <div class="text-xs text-neutral-500">
-            {$statusTipBroad}
-            {progressBroad}%
-          </div>
-        </div>
-      {/if}
-    </div>
   </div>
 
   <div class="grid gap-8">
@@ -216,6 +101,72 @@
             placeholder="输入一份面经，我会告诉你满分回答，快拿去背吧！"
           ></textarea>
         </div>
+        
+        <!-- 操作按钮区域 -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-4">
+          <!-- 模式选择 -->
+          <select
+            bind:value={isDeepMode}
+            class="w-full sm:w-40 px-3 py-2 text-sm border border-neutral-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+          >
+            <option value={true}>🔍 深度模式</option>
+            <option value={false}>🚀 广度模式</option>
+          </select>
+          
+          <button
+            class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:from-neutral-300 disabled:to-neutral-400 text-white font-medium py-3 px-6 rounded-xl shadow-medium hover:shadow-strong disabled:shadow-none transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed relative overflow-hidden w-full sm:flex-1"
+            on:click={generateAnswer}
+            disabled={!$apiKeyStore || loadingDeep || loadingBroad}
+          >
+            {#if loadingDeep && progressDeep > 0}
+              <div
+                class="absolute inset-0 bg-indigo-400/30 transition-all duration-300 ease-out"
+                style="width: {progressDeep}%"
+              ></div>
+            {/if}
+            {#if loadingBroad && progressBroad > 0}
+              <div
+                class="absolute inset-0 bg-blue-400/30 transition-all duration-300 ease-out"
+                style="width: {progressBroad}%"
+              ></div>
+            {/if}
+            <span class="flex items-center justify-center space-x-2 relative z-10">
+              {#if loadingDeep}
+                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="text-sm">{$statusTipDeep || "处理中..."}</span>
+              {:else}
+                <span>🎯</span>
+                <span>生成结果</span>
+              {/if}
+            </span>
+          </button>
+
+          <button
+            on:click={resetAll}
+            class="px-4 py-3 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-medium rounded-xl transition-colors duration-200 w-full sm:w-auto"
+          >
+            重置
+          </button>
+        </div>
+        
+        <!-- 进度信息 -->
+        {#if loadingDeep && statusDeep}
+          <div class="text-center">
+            <div class="text-xs text-neutral-500">
+              深度模式：{$statusTipDeep} {progressDeep}%
+            </div>
+          </div>
+        {/if}
+        {#if loadingBroad && statusBroad}
+          <div class="text-center">
+            <div class="text-xs text-neutral-500">
+              广度模式：{$statusTipBroad} {progressBroad}%
+            </div>
+          </div>
+        {/if}
       </div>
 
       <!-- 模式说明 -->

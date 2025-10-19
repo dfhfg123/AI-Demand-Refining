@@ -41,6 +41,7 @@
             { href: "/", label: "首页" },
             { href: "/prompt-optimizer", label: "提示词优化专家" },
             { href: "/pr-review", label: "PR Review 助手" },
+            { href: "/resume-optimizer", label: "简历优化助手" },
             { href: "/requirement-evaluation", label: "这b需求能不能做" },
             { href: "/interview-analysis", label: "面试表现分析" },
             { href: "/interview", label: "面经转八股" },

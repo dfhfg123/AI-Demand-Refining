@@ -1,8 +1,6 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import ApiKeyPanel from '$lib/components/ApiKeyPanel.svelte';
   import ResultView from '$lib/components/ResultView.svelte';
-  import ModelSelect from '$lib/components/ModelSelect.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { buildPRReviewPrompt } from '$lib/utils/prompt';
   import { useAIStream } from '$lib/hooks/useAIStream';
@@ -178,22 +176,6 @@
       <div>
         <h1 class="text-3xl font-bold text-neutral-800">PR Review 助手</h1>
         <p class="text-neutral-600">输入GitHub PR链接，AI自动分析代码变更并生成审查意见</p>
-      </div>
-    </div>
-
-    <!-- API Key 配置区域 -->
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-soft border border-white/20">
-      <h3 class="text-lg font-semibold text-neutral-800 flex items-center mb-4">
-        <span class="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
-        API 配置
-      </h3>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div class="flex-1 sm:max-w-md">
-          <ApiKeyPanel inline={true} />
-        </div>
-        <div class="flex-shrink-0">
-          <ModelSelect inline={true} />
-        </div>
       </div>
     </div>
   </div>
