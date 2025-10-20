@@ -288,7 +288,7 @@ export const buildResumeParsePrompt = (resumeText: string): string => {
   return `你是一位资深HR与简历解析专家。
 
 【任务】
-从下面的简历原始文本中，提取并结构化所有关键信息。
+从下面的简历原始文本中，提取关键信息。**重点提取工作经历和项目经历的详细内容，其他信息简要提取即可。**
 
 【输出要求】
 必须严格按照以下JSON格式输出，不要添加任何其他文字：
@@ -297,25 +297,7 @@ export const buildResumeParsePrompt = (resumeText: string): string => {
 {
   "basicInfo": {
     "name": "姓名",
-    "title": "当前职位/求职意向",
-    "phone": "电话",
-    "email": "邮箱",
-    "location": "所在地",
-    "linkedin": "LinkedIn链接（如有）",
-    "github": "GitHub链接（如有）",
-    "yearsOfExperience": "工作年限（数字）"
   },
-  "summary": "个人简介/自我评价（原文）",
-  "education": [
-    {
-      "school": "学校名称",
-      "degree": "学位",
-      "major": "专业",
-      "period": "时间段",
-      "gpa": "GPA（如有）",
-      "honors": ["荣誉1", "荣誉2"]
-    }
-  ],
   "workExperience": [
     {
       "company": "公司名称",
@@ -336,23 +318,16 @@ export const buildResumeParsePrompt = (resumeText: string): string => {
       "achievements": ["成就1", "成就2"]
     }
   ],
-  "skills": {
-    "programming": ["语言1", "语言2"],
-    "frameworks": ["框架1", "框架2"],
-    "tools": ["工具1", "工具2"],
-    "languages": ["中文(母语)", "英语(流利)"]
-  },
-  "certifications": ["证书1", "证书2"],
-  "others": "其他信息"
+  "otherSections": "教育背景、技能、证书、荣誉等其他所有内容（保持原文，包括格式）"
 }
 \`\`\`
 
 【解析规则】
-1. 如果某个字段在简历中不存在，使用空字符串""或空数组[]
-2. 时间段统一格式：YYYY.MM - YYYY.MM 或 YYYY.MM - 至今
-3. 成就和职责要分开提取
-4. 保持原文表述，不要改写
-5. 数字、百分比、指标要完整保留
+1. **工作经历和项目经历**：详细提取，职责和成就分开，数字、百分比、指标完整保留
+2. **基本信息**：只提取姓名
+3. **其他内容**：教育背景、技能、证书、荣誉等所有其他内容直接复制原文到 otherSections 字段，保持原有格式
+4. 时间段统一格式：YYYY.MM - YYYY.MM 或 YYYY.MM - 至今
+5. 如果某个字段不存在，使用空字符串""或空数组[]
 
 【简历原文】
 ${resumeText}
@@ -407,9 +382,12 @@ ${parsedResume}
 请按格式输出完整的诊断报告。`;
 };
 
-// 阶段3：优化重写
-export const buildResumeOptimizePrompt = (parsedResume: string, analysisReport: string): string => {
+// 阶段2：优化重写（仅优化项目经历和工作经历）
+export const buildResumeOptimizePrompt = (parsedResume: string): string => {
   return `你是顶级简历优化大师，精通ATS系统规则、FAANG招聘标准和HR心理学。
+
+【任务说明】
+基于提供的简历结构化数据，**只深度优化项目经历和工作/实习经历**部分，其他信息（教育背景、技能、证书等）直接使用原文即可。
 
 【核心原则】
 1. **ATS优先** - 确保机器可解析，关键词密度合理
@@ -429,9 +407,9 @@ export const buildResumeOptimizePrompt = (parsedResume: string, analysisReport: 
 
 **量化模板**：
 - "优化XX，使YY提升ZZ%"
-- "负责XX项目，服务ZZ万用户，日活YY万"
+- "主导XX项目，服务ZZ万用户，日活YY万"
 - "设计XX架构，支撑QPS从AA提升到BB，性能提升CC%"
-- "主导XX重构，代码量减少YY%，bug率降低ZZ%"
+- "重构XX模块，代码量减少YY%，bug率降低ZZ%"
 
 **禁止事项**：
 - ❌ 禁用"负责"、"参与"、"协助"等弱动词
@@ -440,32 +418,26 @@ export const buildResumeOptimizePrompt = (parsedResume: string, analysisReport: 
 - ❌ 禁止技术名词拼写错误
 - ❌ 禁止时间倒序错误
 
-【输出格式】
-严格按照以下Markdown格式输出优化后的简历：
+【输出格式要求】
+**重要**：直接输出 Markdown 格式内容，不要使用代码块包裹（不要用反引号代码块）
+
+严格按照以下格式输出优化后的简历：
 
 # {姓名}
 
-**{职位Title}** | {电话} | {邮箱} | {所在地}  
-{LinkedIn} | {GitHub}
+{联系方式}
 
 ---
 
 ## 💼 专业概要
 
-{2-3行精炼的个人定位，突出核心竞争力、年限、擅长领域、代表成就}
-
----
-
-## 💻 核心技能
-
-**编程语言**：{语言1}、{语言2}（按熟练度排序）  
-**框架/库**：{框架1}、{框架2}  
-**工具/平台**：{工具1}、{工具2}  
-**专业能力**：{能力1}、{能力2}
+{基于工作经历生成2-3行精炼的个人定位，突出核心竞争力、年限、擅长领域}
 
 ---
 
 ## 🏢 工作经历
+
+{对每段工作经历进行深度优化}
 
 ### {公司名称} | {职位} | {地点}
 **{开始时间} - {结束时间}**
@@ -474,12 +446,13 @@ export const buildResumeOptimizePrompt = (parsedResume: string, analysisReport: 
 - {强动词} {技术方案}，{业务价值}（性能提升XX%/错误率降低XX%）
 - {强动词} {团队协作}，{影响范围}（推广到XX个团队/覆盖XX个项目）
 
-### {下一家公司}
-...
+{按时间倒序输出所有工作经历}
 
 ---
 
 ## 🚀 项目经历
+
+{对每个项目进行深度优化}
 
 ### {项目名称} | {角色}
 **{时间段}** | 技术栈：{Tech1}、{Tech2}、{Tech3}
@@ -491,43 +464,42 @@ export const buildResumeOptimizePrompt = (parsedResume: string, analysisReport: 
 - {强动词} {功能实现}，{业务价值}（转化率提升XX%/用户增长XX万）
 - {强动词} {技术难点}，{解决方案}（攻克XX问题/创新XX方案）
 
-### {下一个项目}
-...
+{按时间倒序输出所有项目}
 
 ---
 
-## 🎓 教育背景
-
-**{学校}** | {学位} - {专业} | {时间段}  
-GPA: {X.XX}/4.0 | 荣誉：{荣誉列表}
-
----
-
-## 📜 证书与荣誉
-
-- {证书名称} | 颁发机构 | {时间}
-- {获奖名称} | {级别} | {时间}
-
----
+{这里直接输出 otherSections 中的原文内容，包括教育背景、技能、证书、荣誉等，保持原有格式和内容}
 
 【输入数据】
-**原始简历结构**：
 ${parsedResume}
 
-**诊断报告**：
-${analysisReport}
+【优化重点】
+1. **工作经历优化**：
+   - 每条职责/成就都用强动词开头
+   - 必须量化成果（增长百分比、用户规模、性能提升等）
+   - 突出业务价值和技术深度
+   - 使用STAR法则组织内容
+
+2. **项目经历优化**：
+   - 清晰说明项目背景和目标
+   - 突出个人核心贡献和技术难点
+   - 量化项目成果和业务影响
+   - 明确标注技术栈
+
+3. **其他部分**：
+   - 直接使用 otherSections 中的原文，保持原有格式
+   - 可以适当调整 Markdown 格式使其更美观
 
 【质量检查清单】（输出前必须自检）
-- [ ] 每条成就都有量化数据
+- [ ] 工作和项目经历的每条成就都有量化数据
 - [ ] 所有bullet point用强动词开头
 - [ ] 无拼写和语法错误
 - [ ] 时间线倒序且连贯
 - [ ] 技术栈名称完整准确
-- [ ] 总长度控制在2页以内
 - [ ] 关键词密度合理（不堆砌）
-- [ ] 每行不超过100字符（易读性）
+- [ ] 其他部分保持原文不变
 
-请输出完整的优化简历Markdown格式。`;
+**请直接输出 Markdown 内容，不要使用反引号代码块包裹！**`;
 };
 
 function getReviewTemplateInstructions(template: string): string {
