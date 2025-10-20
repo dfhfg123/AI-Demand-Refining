@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { browser } from '$app/environment';
-  import ResultView from '$lib/components/ResultView.svelte';
+  import MarkdownView from '$lib/components/MarkdownView.svelte';
   import { apiKeyStore } from '$lib/stores/api';
   import { buildResumeParsePrompt, buildResumeOptimizePrompt } from '$lib/utils/prompt';
   import { useAIStream } from '$lib/hooks/useAIStream';
@@ -387,6 +387,11 @@
               ✨ 优化后的简历
             </h3>
             <div class="flex items-center space-x-2">
+              {#if optimizedResume}
+                <div class="text-xs text-neutral-500 bg-white/50 px-3 py-1 rounded-full">
+                  {optimizedResume.length} 字符
+                </div>
+              {/if}
               <button
                 on:click={() => copyToClipboard(optimizedResume)}
                 class="px-3 py-1.5 text-xs font-medium bg-white hover:bg-neutral-50 text-neutral-700 rounded-lg transition-colors border border-neutral-200"
@@ -402,8 +407,8 @@
             </div>
           </div>
         </div>
-        <div class="p-6">
-          <ResultView text={optimizedResume} />
+        <div class="p-6 h-[800px] overflow-y-auto bg-gradient-to-b from-neutral-50/50 to-white/50">
+          <MarkdownView source={optimizedResume} />
         </div>
       </div>
     {/if}
