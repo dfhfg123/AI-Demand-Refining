@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { browser } from '$app/environment';
-  import ResultView from '$lib/components/ResultView.svelte';
+  import MarkdownView from '$lib/components/MarkdownView.svelte';
   import { apiKeyStore } from '$lib/stores/api';
-  import { buildResumeParsePrompt, buildResumeAnalyzePrompt, buildResumeOptimizePrompt } from '$lib/utils/prompt';
+  import { buildResumeParsePrompt, buildResumeOptimizePrompt } from '$lib/utils/prompt';
   import { useAIStream } from '$lib/hooks/useAIStream';
 
   let pdfjsLib: any = null;
@@ -32,31 +32,26 @@
   let isExtracting = false;
   let extractError = '';
   
-  // 三个阶段的AI流
-  let currentStage: 'parse' | 'analyze' | 'optimize' | 'idle' = 'idle';
+  // 两个阶段的AI流
+  let currentStage: 'parse' | 'optimize' | 'idle' = 'idle';
   let parsedData = '';
-  let analysisReport = '';
   let optimizedResume = '';
   
   let previousLoading = false;
   let hasGeneratedResult = false;
 
   $: parseStream = useAIStream("resume-parse");
-  $: analyzeStream = useAIStream("resume-analyze");
   $: optimizeStream = useAIStream("resume-optimize");
 
   $: parseState = parseStream.state;
-  $: analyzeState = analyzeStream.state;
   $: optimizeState = optimizeStream.state;
 
   $: currentStream = 
     currentStage === 'parse' ? parseStream :
-    currentStage === 'analyze' ? analyzeStream :
     currentStage === 'optimize' ? optimizeStream : null;
 
   $: loading = 
     $parseState.status !== "done" && $parseState.status !== "error" && $parseState.status !== "idle" ||
-    $analyzeState.status !== "done" && $analyzeState.status !== "error" && $analyzeState.status !== "idle" ||
     $optimizeState.status !== "done" && $optimizeState.status !== "error" && $optimizeState.status !== "idle";
 
   // 提取PDF文本
@@ -120,12 +115,10 @@
     
     // 重置所有状态
     parsedData = '';
-    analysisReport = '';
     optimizedResume = '';
     hasGeneratedResult = false;
     
     parseStream.reset();
-    analyzeStream.reset();
     optimizeStream.reset();
 
     try {
@@ -143,25 +136,17 @@
       await tick();
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // 阶段2：诊断分析
-      currentStage = 'analyze';
-      const analyzePrompt = buildResumeAnalyzePrompt(parsedData);
-      await analyzeStream.invoke(analyzePrompt);
-      analysisReport = $analyzeState.result;
-
-      if (!analysisReport || $analyzeState.error) {
-        throw new Error('简历诊断失败');
-      }
-
-      // 等待一下
-      await tick();
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // 阶段3：优化重写
+      // 阶段2：优化重写（直接基于解析结果优化）
       currentStage = 'optimize';
-      const optimizePrompt = buildResumeOptimizePrompt(parsedData, analysisReport);
-      await optimizeStream.invoke(optimizePrompt);
-      optimizedResume = $optimizeState.result;
+      const optimizePrompt = buildResumeOptimizePrompt(parsedData);
+      await optimizeStream.invoke(optimizePrompt);      
+      // 去除可能的 markdown 代码块包裹
+      let result = $optimizeState.result;
+      if (result) {
+        // 去除开头的 ```markdown 或 ``` 和结尾的 ```
+        result = result.replace(/^```(?:markdown)?\s*\n/i, '').replace(/\n```\s*$/, '');
+      }
+      optimizedResume = result;
 
       if (optimizedResume) {
         hasGeneratedResult = true;
@@ -190,13 +175,11 @@
     extractedText = '';
     extractError = '';
     parsedData = '';
-    analysisReport = '';
     optimizedResume = '';
     hasGeneratedResult = false;
     currentStage = 'idle';
     
     parseStream.reset();
-    analyzeStream.reset();
     optimizeStream.reset();
     
     if (fileInput) {
@@ -230,8 +213,7 @@
   // 获取当前状态提示
   $: statusMessage = 
     currentStage === 'parse' ? '🔍 正在解析简历结构...' :
-    currentStage === 'analyze' ? '📊 正在诊断问题和优化空间...' :
-    currentStage === 'optimize' ? '✨ 正在重写优化简历...' :
+    currentStage === 'optimize' ? '✨ 正在优化简历...' :
     isExtracting ? '📄 正在提取PDF文本...' : '';
 </script>
 
@@ -249,7 +231,7 @@
       </div>
       <div>
         <h1 class="text-3xl font-bold text-neutral-800">简历优化助手</h1>
-        <p class="text-neutral-600">上传PDF简历，AI三步优化：结构化解析 → 深度诊断 → ATS友好重写</p>
+        <p class="text-neutral-600">上传PDF简历，AI快速优化：智能解析 → ATS友好重</p>
       </div>
     </div>
   </div>
@@ -383,38 +365,14 @@
             </div>
           </div>
           <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center {currentStage === 'analyze' ? 'bg-indigo-100 text-indigo-600' : analysisReport ? 'bg-green-100 text-green-600' : 'bg-neutral-100 text-neutral-400'}">
-              {analysisReport ? '✓' : currentStage === 'analyze' ? '⋯' : '2'}
-            </div>
-            <div class="flex-1">
-              <div class="text-sm font-medium">阶段2：深度诊断</div>
-              <div class="text-xs text-neutral-500">分析问题、识别优化空间、制定优化策略</div>
-            </div>
-          </div>
-          <div class="flex items-center space-x-3">
             <div class="w-8 h-8 rounded-full flex items-center justify-center {currentStage === 'optimize' ? 'bg-indigo-100 text-indigo-600' : optimizedResume ? 'bg-green-100 text-green-600' : 'bg-neutral-100 text-neutral-400'}">
-              {optimizedResume ? '✓' : currentStage === 'optimize' ? '⋯' : '3'}
+              {optimizedResume ? '✓' : currentStage === 'optimize' ? '⋯' : '2'}
             </div>
             <div class="flex-1">
-              <div class="text-sm font-medium">阶段3：优化重写</div>
-              <div class="text-xs text-neutral-500">ATS友好、量化成果、强动词、STAR法则</div>
+              <div class="text-sm font-medium">阶段2：优化重写</div>
+              <div class="text-xs text-neutral-500">优化项目和工作经历，量化成果、强动词、STAR法则</div>
             </div>
           </div>
-        </div>
-      </div>
-    {/if}
-
-    <!-- 诊断报告 -->
-    {#if analysisReport}
-      <div class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 overflow-hidden">
-        <div class="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b border-neutral-100">
-          <h3 class="text-lg font-semibold text-neutral-800 flex items-center">
-            <span class="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-            📊 诊断报告
-          </h3>
-        </div>
-        <div class="p-6">
-          <ResultView text={analysisReport} />
         </div>
       </div>
     {/if}
@@ -429,6 +387,11 @@
               ✨ 优化后的简历
             </h3>
             <div class="flex items-center space-x-2">
+              {#if optimizedResume}
+                <div class="text-xs text-neutral-500 bg-white/50 px-3 py-1 rounded-full">
+                  {optimizedResume.length} 字符
+                </div>
+              {/if}
               <button
                 on:click={() => copyToClipboard(optimizedResume)}
                 class="px-3 py-1.5 text-xs font-medium bg-white hover:bg-neutral-50 text-neutral-700 rounded-lg transition-colors border border-neutral-200"
@@ -444,11 +407,12 @@
             </div>
           </div>
         </div>
-        <div class="p-6">
-          <ResultView text={optimizedResume} />
+        <div class="p-6 h-[800px] overflow-y-auto bg-gradient-to-b from-neutral-50/50 to-white/50">
+          <MarkdownView source={optimizedResume} />
         </div>
       </div>
     {/if}
   </div>
 </div>
+
 
