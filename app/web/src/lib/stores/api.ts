@@ -3,7 +3,7 @@ import { load, save } from '$lib/utils/storage';
 
 // 从环境变量读取默认配置（如果没有配置则使用备用值）
 export const DEFAULT_API_KEY = import.meta.env.VITE_DEFAULT_API_KEY || 'sk-sivthzdmucwdxfupiteupminiemavhvvvegzmsdzdzyfpsxy';
-export const DEFAULT_MODEL = import.meta.env.VITE_DEFAULT_MODEL || 'THUDM/GLM-Z1-9B-0414';
+export const DEFAULT_MODEL = import.meta.env.VITE_DEFAULT_MODEL || 'Qwen/Qwen3.5-4B';
 
 // 遮蔽 API Key 显示（用于 UI 展示）
 export function maskApiKey(apiKey: string): string {
