@@ -567,3 +567,95 @@ function getReviewTemplateInstructions(template: string): string {
       ].join('\n');
   }
 }
+
+export const buildSkillConverterPrompt = (userInput: string): string => {
+  return `You are an expert Agent Skill architect following the AgentSkills open standard (agentskills.io). Convert the user's prompt/capability description into a complete Agent Skill package.
+
+## AgentSkills Standard
+
+A skill is a folder containing a SKILL.md file (required) and optional resources:
+
+skill-name/
+├── SKILL.md              # Required: metadata + instructions
+├── scripts/              # Optional: executable code (Python/Bash)
+├── references/           # Optional: reference documentation
+└── assets/               # Optional: templates and resources
+
+## SKILL.md Format
+
+SKILL.md has two parts: YAML frontmatter + Markdown body.
+
+\`\`\`markdown
+---
+name: skill-name
+description: What the skill does and when to use it (max 1024 chars)
+license: MIT
+compatibility: Compatible agents/frameworks (max 500 chars)
+metadata:
+  author: author-name
+  version: "1.0.0"
+  tags: "tag1 tag2 tag3"
+allowed-tools: Read Write Bash WebSearch Grep Glob
+---
+
+# Skill Name
+
+## When to Use
+Specific trigger conditions for this skill...
+
+## Instructions
+Detailed step-by-step instructions in Markdown...
+
+## Examples
+Working examples of how to use this skill...
+\`\`\`
+
+### Field Rules:
+- **name**: lowercase, numbers, hyphens only. Max 64 chars. Must match parent folder name.
+- **description**: What the skill does + when to use it. Max 1024 chars. This is the trigger mechanism — be specific about use cases.
+- **license**: Optional. Default MIT.
+- **compatibility**: Optional.
+- **metadata**: Optional key-value pairs. Common keys: author, version, tags.
+- **allowed-tools**: Optional. Space-separated list of tools (e.g., Read, Write, Bash, WebSearch, Grep, Glob).
+
+### Skill Installation Paths:
+- Project scope: <project>/.agents/skills/<skill-name>/SKILL.md
+- User scope: ~/.agents/skills/<skill-name>/SKILL.md
+- OpenClaw: ~/.openclaw/skills/<skill-name>/SKILL.md
+- Clawdbot: ~/.clawdbot/skills/<skill-name>/SKILL.md
+
+### Design Principles:
+1. **Conciseness is essential** — context window is shared. Only add information the agent doesn't already know.
+2. **Progressive disclosure** — metadata always loaded (~100 tokens), body loaded on activation (<5k tokens), resources loaded on demand.
+3. **Description is the trigger** — agents use description to decide when to activate the skill. Include specific keywords and use cases.
+
+## Output Format
+
+Output EXACTLY in this format using the separator line ===SECTION:name=== between sections. Do NOT wrap content in JSON strings. Each section's content goes directly after its separator line:
+
+===SECTION:skillName===
+kebab-case-name
+
+===SECTION:skillMd===
+(complete SKILL.md content with YAML frontmatter + Markdown body, written directly as plain text)
+
+===SECTION:usageGuide===
+(plain text instructions on how to install and use this skill, including: (a) which directory to place files, (b) how the agent discovers/activates it, (c) any required dependencies or environment variables)
+
+===SECTION:readme===
+(README.md content as plain text, including overview, installation, quick start, and examples)
+
+===END===
+
+## Requirements:
+1. skillName: concise, descriptive, kebab-case (e.g., processing-pdfs, analyzing-spreadsheets)
+2. SKILL.md: complete YAML frontmatter + detailed Markdown instructions following the structure above
+3. usageGuide: explain installation paths for different agents (OpenClaw, Clawdbot, Claude Code, Cursor)
+4. Infer appropriate allowed-tools based on what the skill needs
+5. Instructions must be comprehensive enough for autonomous agent execution
+6. Output language matches user's input language
+
+## User's Prompt/Capability Description:
+
+${userInput}`;
+};

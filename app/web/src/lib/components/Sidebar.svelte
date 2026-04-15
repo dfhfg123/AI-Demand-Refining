@@ -18,6 +18,7 @@
   // 添加图标映射
   const iconMap: Record<string, string> = {
     "/": "🏠",
+    "/skill-converter": "⚡",
     "/prompt-optimizer": "✨",
     "/pr-review": "🔍",
     "/resume-optimizer": "📄",

@@ -39,6 +39,7 @@
         <Sidebar
           items={[
             { href: "/", label: "首页" },
+            { href: "/skill-converter", label: "Skill 转换器" },
             { href: "/prompt-optimizer", label: "提示词优化专家" },
             { href: "/pr-review", label: "PR Review 助手" },
             { href: "/resume-optimizer", label: "简历优化助手" },
@@ -70,6 +71,12 @@
          class:text-neutral-500={$active !== '/'}>
         <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
         <span class="truncate">首页</span>
+      </a>
+      <a href={getFullHref("/skill-converter")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
+         class:text-primary-600={$active.startsWith('/skill-converter')}
+         class:text-neutral-500={!$active.startsWith('/skill-converter')}>
+        <div class="w-6 h-6 mb-1 bg-current rounded opacity-20"></div>
+        <span class="truncate">Skill</span>
       </a>
       <a href={getFullHref("/prompt-optimizer")} class="flex flex-col items-center p-2 text-xs text-center min-w-0"
          class:text-primary-600={$active.startsWith('/prompt-optimizer')}

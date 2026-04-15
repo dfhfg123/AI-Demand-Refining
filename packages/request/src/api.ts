@@ -80,11 +80,16 @@ export const invokeSiliconFlow = async (
   let buffer = "";
   let fullContent = "";
   let progress = 10;
+  let finishReason = "";
 
   while (true) {
     const { done, value } = await reader.read();
 
     if (done) {
+      if (finishReason === "length") {
+        fullContent += "\n\n[⚠️ 输出因达到最大token限制被截断，请尝试缩短输入或分步生成]";
+        options.onStream?.("\n\n[⚠️ 输出因达到最大token限制被截断，请尝试缩短输入或分步生成]");
+      }
       options.onProgress?.(100, "done");
       options.onFinished?.();
       break;
@@ -101,14 +106,28 @@ export const invokeSiliconFlow = async (
         const data = line.slice(6).trim();
 
         if (data === "[DONE]") {
+          if (finishReason === "length") {
+            fullContent += "\n\n[⚠️ 输出因达到最大token限制被截断，请尝试缩短输入或分步生成]";
+            options.onStream?.("\n\n[⚠️ 输出因达到最大token限制被截断，请尝试缩短输入或分步生成]");
+          }
           options.onProgress?.(100, "done");
           options.onFinished?.();
           return fullContent;
         }
 
         if (data) {
-          const parsed = JSON.parse(data);
-          const content = parsed?.choices?.[0]?.delta?.content || "";
+          let parsed: any;
+          try {
+            parsed = JSON.parse(data);
+          } catch {
+            continue;
+          }
+          const choice = parsed?.choices?.[0];
+          const content = choice?.delta?.content || "";
+
+          if (choice?.finish_reason) {
+            finishReason = choice.finish_reason;
+          }
 
           if (content) {
             fullContent += content;

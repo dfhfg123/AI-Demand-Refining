@@ -12,6 +12,7 @@
   "dependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.5.0",
+    "jszip": "^3.10.1",
     "marked": "^16.2.1",
     "pdfjs-dist": "^5.4.296",
     "svelte": "^4.2.0"

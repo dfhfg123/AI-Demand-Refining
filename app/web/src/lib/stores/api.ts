@@ -19,17 +19,10 @@ export function isDefaultApiKey(apiKey: string): boolean {
 
 // 可选模型列表
 export const availableModels = [
-  { id: 'THUDM/GLM-Z1-9B-0414', name: 'THUDM/GLM-Z1-9B-0414' },
-  { id: 'moonshotai/Kimi-K2-Instruct', name: 'moonshotai/Kimi-K2-Instruct' },
-  { id: 'deepseek-ai/DeepSeek-V3.1', name: 'deepseek-ai/DeepSeek-V3.1' },
-  { id: 'Pro/deepseek-ai/DeepSeek-V3.2-Exp', name: 'Pro/deepseek-ai/DeepSeek-V3.2-Exp' },
-  { id: 'deepseek-ai/DeepSeek-V3.1-Terminus', name: 'deepseek-ai/DeepSeek-V3.1-Terminus' },
-  { id: 'deepseek-ai/DeepSeek-V3.2-Exp', name: 'deepseek-ai/DeepSeek-V3.2-Exp' },
-  { id: 'inclusionAI/Ring-1T', name: 'inclusionAI/Ring-1T' },
-  { id: 'zai-org/GLM-4.5V', name: 'zai-org/GLM-4.5V' },
-  { id: 'zai-org/GLM-4.6', name: 'zai-org/GLM-4.6' },
-  { id: 'ByteDance-Seed/Seed-OSS-36B-Instruct', name: 'ByteDance-Seed/Seed-OSS-36B-Instruct' },
-  { id: 'MiniMaxAI/MiniMax-M1-80k', name: 'MiniMaxAI/MiniMax-M1-80k' }
+  { id: 'Pro/zai-org/GLM-5.1', name: 'Pro/zai-org/GLM-5.1' },
+  { id: 'Pro/MiniMaxAI/MiniMax-M2.5', name: 'Pro/MiniMaxAI/MiniMax-M2.5' },
+  { id: 'Pro/zai-org/GLM-5', name: 'Pro/zai-org/GLM-5' },
+  { id: 'Pro/moonshotai/Kimi-K2.5', name: 'Pro/moonshotai/Kimi-K2.5' },
 ];
 
 const persisted = load();

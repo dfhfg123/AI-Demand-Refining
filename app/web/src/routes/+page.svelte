@@ -9,6 +9,14 @@
 
   const features = [
     {
+      icon: "⚡",
+      title: "Skill 转换器",
+      description:
+        "输入 Prompt 或能力描述，一键生成 Agent Skill 配置包，直接在 Cursor/Claude Code 中使用！",
+      href: "/skill-converter",
+      color: "from-amber-500 to-orange-600",
+    },
+    {
       icon: "✨",
       title: "提示词优化专家",
       description:

@@ -19,7 +19,7 @@
   // 确保组件挂载时有正确的默认值
   onMount(() => {
     if (!$selectedModelStore || $selectedModelStore === "") {
-      selectedModelStore.set("moonshotai/Kimi-K2-Instruct");
+      selectedModelStore.set(availableModels[0]?.id || "Pro/zai-org/GLM-5.1");
     }
 
     // 创建 portal 容器
@@ -38,13 +38,12 @@
     };
   });
 
-  // 响应式检查，确保值的有效性
-  $: if (
-    $selectedModelStore &&
-    !availableModels.some((model) => model.id === $selectedModelStore)
-  ) {
-    selectedModelStore.set("moonshotai/Kimi-K2-Instruct");
+  // 响应式检查，确保值的有效性（空值时重置为默认）
+  $: if (!$selectedModelStore || $selectedModelStore === "") {
+    selectedModelStore.set(availableModels[0]?.id || "Pro/zai-org/GLM-5.1");
   }
+
+  $: isCustomModel = $selectedModelStore && !availableModels.some((m) => m.id === $selectedModelStore);
 
   // 响应式更新过滤模型
   $: {
@@ -57,10 +56,9 @@
     }
   }
 
-  // 获取当前选中的模型名称
   $: selectedModelName =
     availableModels.find((m) => m.id === $selectedModelStore)?.name ||
-    "选择模型";
+    (isCustomModel ? $selectedModelStore : "选择模型");
 
   // 更新下拉菜单位置
   function updateDropdownPosition() {
@@ -253,7 +251,6 @@
                   on:click|stopPropagation={() => selectModel(model.id)}
                   on:mouseenter={() => (highlightedIndex = i)}
                 >
-                  <!-- 选中状态图标 -->
                   <div class="w-5 h-5 mr-2 flex-shrink-0">
                     {#if $selectedModelStore === model.id}
                       <Check className="w-5 h-5 text-purple-600" />
@@ -264,10 +261,34 @@
               {/each}
             </ul>
           {:else}
-            <div class="px-3 py-8 text-sm text-neutral-500 text-center">
+            <div class="px-3 py-4 text-sm text-neutral-500 text-center">
               未找到匹配的模型
             </div>
           {/if}
+        </div>
+
+        <!-- 自定义模型输入 -->
+        <div class="border-t border-neutral-100 p-2">
+          <div class="flex items-center gap-2">
+            <input
+              bind:value={searchValue}
+              on:keydown={handleKeydown}
+              class="flex-1 px-3 py-2 text-sm border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="输入自定义模型 ID..."
+              autocomplete="off"
+            />
+            <button
+              class="px-3 py-2 text-xs font-medium bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!searchValue.trim()}
+              on:click|stopPropagation={() => {
+                if (searchValue.trim()) {
+                  selectModel(searchValue.trim());
+                }
+              }}
+            >
+              使用
+            </button>
+          </div>
         </div>
       </div>
 {/if}

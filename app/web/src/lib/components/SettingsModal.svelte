@@ -8,6 +8,7 @@
   let localApiKey = $apiKeyStore;
   let localSelectedModel = $selectedModelStore;
   let showKey = false;
+  let customModelInput = "";
 
   // 当模态框打开时，同步本地状态
   $: if (isOpen) {
@@ -182,13 +183,35 @@
               <option value={model.id}>{model.name}</option>
             {/each}
           </select>
+          {#if hasCustomApiKey}
+            <div class="flex items-center gap-2">
+              <input
+                bind:value={customModelInput}
+                class="flex-1 px-3 py-2 text-sm border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-neutral-50"
+                placeholder="输入自定义模型 ID..."
+                autocomplete="off"
+              />
+              <button
+                class="px-3 py-2 text-xs font-medium bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!customModelInput.trim()}
+                on:click={() => {
+                  if (customModelInput.trim()) {
+                    localSelectedModel = customModelInput.trim();
+                    customModelInput = "";
+                  }
+                }}
+              >
+                使用
+              </button>
+            </div>
+          {/if}
           <p class="text-xs text-neutral-500">
             {#if !hasCustomApiKey}
               <span class="text-orange-600">
                 ⚠️ 使用默认配置时，固定使用 {DEFAULT_MODEL} 模型
               </span>
             {:else}
-              可选择不同的模型
+              可选择预设模型或输入自定义模型 ID
             {/if}
           </p>
         </div>

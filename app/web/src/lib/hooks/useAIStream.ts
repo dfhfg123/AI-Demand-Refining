@@ -20,7 +20,7 @@ interface AIStream {
 
 export const baseConfig = {
   baseURL: "https://api.siliconflow.cn/v1/chat/completions",
-  defaultModel: "moonshotai/Kimi-K2-Instruct",
+  defaultModel: "Pro/zai-org/GLM-5.1",
 };
 
 // 存储当前未完成的stream，使得切换页面组件卸载重装后可以找回来
@@ -62,10 +62,11 @@ export function useAIStream(id: string): AIStream {
     reset();
     abortController = new AbortController();
 
-    const onProgress = (progress: number, status: AIStreamStatus) =>
-      state.update((state) => ({ ...state, progress, status }));
+    const onProgress = (progress: number, status: AIStreamStatus) => {
+      state.update((s) => ({ ...s, progress, status }));
+    };
     const onStream = (chunk: string) =>
-      state.update((state) => ({ ...state, result: state.result + chunk }));
+      state.update((s) => ({ ...s, result: s.result + chunk }));
 
     try {
       await invokeSiliconFlow({
